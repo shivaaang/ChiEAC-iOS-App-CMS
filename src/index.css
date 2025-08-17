@@ -1,0 +1,95 @@
+/*
+ * index.css
+ * ChiEAC
+ *
+ * Created by Shivaang Kumar on 8/16/25.
+ */
+
+@import "tailwindcss";
+
+/* Custom theme for Tailwind v4 */
+@theme {
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
+  
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  
+  --color-purple-500: #a855f7;
+  --color-purple-600: #9333ea;
+  --color-purple-700: #7e22ce;
+  
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  
+  --color-orange-500: #f97316;
+  --color-orange-600: #ea580c;
+  
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  
+  --color-pink-500: #ec4899;
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+}
+
+/* Custom global styles for dark theme */
+html {
+  background-color: var(--color-slate-900);
+}
+
+body {
+  background-color: var(--color-slate-900);
+  color: var(--color-slate-100);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-slate-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-slate-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-slate-500);
+}
+
+/* Text truncation utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
