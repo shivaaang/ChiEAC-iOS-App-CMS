@@ -2,6 +2,7 @@
 //  Dashboard.tsx
 //  ChiEAC
 //
+//  Main dashboard with overview statistics and quick navigation
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

@@ -2,6 +2,7 @@
 //  main.tsx
 //  ChiEAC
 //
+//  React application entry point and root rendering
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

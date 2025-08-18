@@ -2,6 +2,7 @@
 //  Layout.tsx
 //  ChiEAC
 //
+//  Main application layout with navigation and sidebar
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

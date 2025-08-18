@@ -2,6 +2,7 @@
 //  LoginPage.tsx
 //  ChiEAC
 //
+//  Firebase authentication login page component
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

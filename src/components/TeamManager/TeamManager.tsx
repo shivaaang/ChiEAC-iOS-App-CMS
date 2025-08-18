@@ -1,0 +1,190 @@
+//
+//  TeamManager.tsx
+//  ChiEAC
+//
+//  Main TeamManager component with modular architecture
+//  Created by Shivaang Kumar on 8/17/25.
+//
+
+import React, { useState } from 'react';
+import { useTeamManager, useTeamHandlers, useConfirmationHandlers } from './hooks';
+import { TeamsView } from './components/TeamsView';
+import { MembersView } from './components/MembersView';
+import { TeamForm } from './components/TeamForm';
+import { CreationConfirmationDialog } from './components/CreationConfirmationDialog';
+import { ExpertModeWarningDialog } from './components/ExpertModeWarningDialog';
+import type { DropResult } from '@hello-pangea/dnd';
+
+const TeamManager: React.FC = () => {
+  const [view, setView] = useState<'teams' | 'members'>('teams');
+  const [isReorderingMode, setIsReorderingMode] = useState(false);
+
+  // Team management state and functions
+  const teamManager = useTeamManager();
+  const teamHandlers = useTeamHandlers(teamManager);
+  const confirmationHandlers = useConfirmationHandlers(teamManager);
+
+  // Navigation handlers
+  const handleTeamClick = (team: any) => {
+    teamManager.setSelectedTeam(team);
+    setView('members');
+    setIsReorderingMode(false);
+  };
+
+  const handleBackToTeams = () => {
+    setView('teams');
+    teamManager.setSelectedTeam(null);
+    setIsReorderingMode(false);
+  };
+
+  const handleToggleReorderMode = () => {
+    setIsReorderingMode(!isReorderingMode);
+  };
+
+  // Create handlers (open forms)
+  const handleCreateTeam = () => {
+    teamManager.setShowTeamForm(true);
+    teamManager.setEditingTeam(null);
+  };
+
+  const handleCreateMember = () => {
+    teamManager.setShowMemberForm(true);
+    teamManager.setEditingMember(null);
+  };
+
+  // Reorder confirmation wrapper
+  const handleReorderConfirmation = (
+    type: 'team' | 'member',
+    _sourceIndex: number,
+    _destinationIndex: number,
+    _itemName: string,
+    onComplete: () => void
+  ) => {
+    if (type === 'team') {
+      confirmationHandlers.enterTeamReorderingMode();
+      // TODO: Implement pending reorder state management
+    } else {
+      confirmationHandlers.enterReorderingMode();
+      // TODO: Implement pending reorder state management
+    }
+    onComplete();
+  };
+
+  // Drag and drop handlers
+  const handleTeamDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+
+    if (sourceIndex === destinationIndex) return;
+
+    handleReorderConfirmation(
+      'team',
+      sourceIndex,
+      destinationIndex,
+      teamManager.teams[sourceIndex].team_name,
+      () => setIsReorderingMode(false)
+    );
+  };
+
+  const handleMemberDragEnd = (result: DropResult) => {
+    if (!result.destination || !teamManager.selectedTeam) return;
+
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+
+    if (sourceIndex === destinationIndex) return;
+
+    const teamMembers = teamManager.teamMembers.filter(member => 
+      member.member_team === teamManager.selectedTeam!.team_code || 
+      member.team === teamManager.selectedTeam!.team_code
+    );
+
+    handleReorderConfirmation(
+      'member',
+      sourceIndex,
+      destinationIndex,
+      teamMembers[sourceIndex].member_name,
+      () => setIsReorderingMode(false)
+    );
+  };
+
+  // Render based on current view
+  if (view === 'teams') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8">
+        <div className="max-w-7xl mx-auto">
+          <TeamsView
+            teams={teamManager.teams}
+            selectedTeam={teamManager.selectedTeam}
+            isReorderingMode={isReorderingMode}
+            teamMembers={teamManager.teamMembers}
+            onTeamClick={handleTeamClick}
+            onViewTeamDetails={handleTeamClick}
+            onDeleteTeam={confirmationHandlers.handleDeleteTeam}
+            onTeamDragEnd={handleTeamDragEnd}
+            onToggleReorderMode={handleToggleReorderMode}
+            onCreateTeam={handleCreateTeam}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8">
+      <div className="max-w-7xl mx-auto">
+        <MembersView
+          selectedTeam={teamManager.selectedTeam}
+          teamMembers={teamManager.teamMembers}
+          isReorderingMode={isReorderingMode}
+          onEditMember={teamHandlers.handleEditMember}
+          onDeleteMember={confirmationHandlers.handleDeleteMember}
+          onMemberDragEnd={handleMemberDragEnd}
+          onToggleReorderMode={handleToggleReorderMode}
+          onCreateMember={handleCreateMember}
+          onBackToTeams={handleBackToTeams}
+        />
+      </div>
+
+      {/* Team Form Modal */}
+      <TeamForm
+        isVisible={teamManager.showTeamForm}
+        editingTeam={teamManager.editingTeam}
+        teamFormData={teamManager.teamFormData}
+        autoGeneratedFields={teamManager.autoGeneratedFields}
+        editingTeamFirestoreFields={teamManager.editingTeamFirestoreFields}
+        onSubmit={teamHandlers.handleTeamSubmit}
+        onTeamNameChange={teamHandlers.handleTeamNameChange}
+        onTeamDescriptionChange={(description: string) => 
+          teamManager.setTeamFormData({ ...teamManager.teamFormData, team_description: description })
+        }
+        onClose={() => teamManager.setShowTeamForm(false)}
+        onExpertModeToggle={() => {
+          teamManager.setCurrentWarningType('team');
+          teamManager.setShowWarningPopup(true);
+        }}
+        onDisableExpertMode={teamHandlers.disableTeamExpertMode}
+      />
+
+      {/* Creation Confirmation Dialog */}
+      <CreationConfirmationDialog
+        isVisible={teamManager.showCreateConfirmation}
+        pendingCreation={teamManager.pendingCreation}
+        onConfirm={confirmationHandlers.confirmCreation}
+        onCancel={confirmationHandlers.cancelCreation}
+      />
+
+      {/* Expert Mode Warning Dialog */}
+      <ExpertModeWarningDialog
+        isVisible={teamManager.showWarningPopup}
+        warningType={teamManager.currentWarningType}
+        onConfirm={teamHandlers.confirmTeamExpertMode}
+        onCancel={() => teamManager.setShowWarningPopup(false)}
+      />
+    </div>
+  );
+};
+
+export default TeamManager;

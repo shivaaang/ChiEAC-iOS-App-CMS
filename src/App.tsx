@@ -2,6 +2,7 @@
 //  App.tsx
 //  ChiEAC
 //
+//  Main React application component with routing and authentication
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

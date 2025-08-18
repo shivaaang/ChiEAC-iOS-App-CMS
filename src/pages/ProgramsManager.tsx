@@ -2,6 +2,7 @@
 //  ProgramsManager.tsx
 //  ChiEAC
 //
+//  Programs management with CRUD operations and drag-and-drop reordering
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

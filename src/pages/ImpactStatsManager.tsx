@@ -2,6 +2,7 @@
 //  ImpactStatsManager.tsx
 //  ChiEAC
 //
+//  Impact statistics management with CRUD operations and reordering
 //  Created by Shivaang Kumar on 8/16/25.
 //
 

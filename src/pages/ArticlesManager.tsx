@@ -2,6 +2,7 @@
 //  ArticlesManager.tsx
 //  ChiEAC
 //
+//  Medium articles management page (placeholder for future implementation)
 //  Created by Shivaang Kumar on 8/16/25.
 //
 
