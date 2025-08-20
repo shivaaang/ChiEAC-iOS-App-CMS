@@ -11,6 +11,6 @@ export const useTeamHandlers = (teamManager: any) => {
   return createTeamHandlers(teamManager, teamManager);
 };
 
-export const useConfirmationHandlers = (teamManager: any) => {
-  return createConfirmationHandlers(teamManager, teamManager);
+export const useConfirmationHandlers = (teamManager: any, teamHandlers?: any) => {
+  return createConfirmationHandlers(teamManager, teamManager, teamHandlers);
 };

@@ -2,11 +2,12 @@
 //  ArticlePublishConfirmationDialog.tsx
 //  ChiEAC
 //
-//  Confirmation dialog for publishing article changes
+//  Confirmation dialog for publishing articles
 //  Created by Shivaang Kumar on 8/18/25.
 //
 
-import type { Article } from '../../../types';
+import { useState } from 'react';
+import type { Article } from '../types';
 
 interface ArticlePublishConfirmationDialogProps {
   isOpen: boolean;

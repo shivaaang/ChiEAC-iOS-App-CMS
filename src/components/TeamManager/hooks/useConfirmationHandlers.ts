@@ -11,10 +11,11 @@ import { db } from '../../../config/firebase';
 
 export const createConfirmationHandlers = (
   teamManagerState: any,
-  teamManagerActions: any
+  teamManagerActions: any,
+  teamHandlers?: any
 ) => {
   const {
-    // pendingCreation, // unused after cleanup
+    pendingCreation,
     pendingDeletion,
     pendingMemberDeletion,
     pendingSubmitFunction,
@@ -53,6 +54,11 @@ export const createConfirmationHandlers = (
   // Creation confirmation handlers
   const confirmCreation = () => {
     setShowCreateConfirmation(false);
+    if (pendingCreation.type === 'team' && teamHandlers?.executeTeamUpdate) {
+      teamHandlers.executeTeamUpdate();
+    } else if (pendingCreation.type === 'member' && teamHandlers?.executeMemberUpdate) {
+      teamHandlers.executeMemberUpdate();
+    }
   };
 
   const cancelCreation = () => {

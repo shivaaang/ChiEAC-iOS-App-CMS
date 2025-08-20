@@ -130,7 +130,7 @@ export const useTeamManager = () => {
 
   const generateUniqueTeamId = (baseName: string): string => {
     const trimmedName = baseName.trim();
-    const code = trimmedName.toLowerCase().replace(/\\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    const code = trimmedName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
     let baseId = `team.${code}`;
     let uniqueId = baseId;
     let counter = 1;
@@ -145,7 +145,7 @@ export const useTeamManager = () => {
 
   const generateUniqueMemberId = (memberName: string, teamCode: string): string => {
     const trimmedName = memberName.trim();
-    const nameForId = trimmedName.toLowerCase().replace(/\\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    const nameForId = trimmedName.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
     let baseId = `member.${teamCode}.${nameForId}`;
     let uniqueId = baseId;
     let counter = 1;
@@ -189,7 +189,7 @@ export const useTeamManager = () => {
       querySnapshot.forEach((doc) => {
         items.push({ id: doc.id, ...doc.data() } as Team);
       });
-      items.sort((a, b) => a.order - b.order);
+      items.sort((a, b) => (a.order || 0) - (b.order || 0));
       setTeams(items);
       
       if (items.length > 0 && !selectedTeam) {
@@ -208,7 +208,7 @@ export const useTeamManager = () => {
       querySnapshot.forEach((doc) => {
         items.push({ id: doc.id, ...doc.data() } as TeamMember);
       });
-      items.sort((a, b) => a.order - b.order);
+      items.sort((a, b) => (a.order || 0) - (b.order || 0));
       setTeamMembers(items);
     } catch (error) {
       console.error('❌ Error fetching team members:', error);
@@ -312,6 +312,8 @@ export const useTeamManager = () => {
         member.team === selectedTeam.team_code || 
         member.member_team === selectedTeam.team_code
       );
+      // Sort filtered members by order to maintain proper ordering
+      filtered.sort((a, b) => (a.order || 0) - (b.order || 0));
       setFilteredMembers(filtered);
     }
   }, [selectedTeam, teamMembers]);

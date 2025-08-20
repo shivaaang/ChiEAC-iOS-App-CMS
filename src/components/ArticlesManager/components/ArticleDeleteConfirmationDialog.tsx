@@ -6,7 +6,8 @@
 //  Created by Shivaang Kumar on 8/18/25.
 //
 
-import type { Article } from '../../../types';
+import { useState } from 'react';
+import type { Article } from '../types';
 
 interface ArticleDeleteConfirmationDialogProps {
   isOpen: boolean;

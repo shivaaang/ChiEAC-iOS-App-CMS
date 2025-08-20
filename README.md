@@ -1,233 +1,118 @@
 # ChiEAC CMS - Content Management System
 
-[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.0-purple.svg)](https://vitejs.dev/)
-[![Firebase](https://img.shields.io/badge/Firebase-10.0-orange.svg)](https://firebase.google.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-teal.svg)](https://tailwindcss.com/)
+[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.1-purple.svg)](https://vitejs.dev/)
+[![Firebase](https://img.shields.io/badge/Firebase-12.1-orange.svg)](https://firebase.google.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-teal.svg)](https://tailwindcss.com/)
 
-A sophisticated, modern content management system for ChiEAC, featuring advanced team management, content operations, and a professional dark-themed interface with comprehensive CRUD capabilities.
+A React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Provides modular architecture for team management, article content operations, and administrative functionality.
 
-## 🌟 Features Overview
+## Architecture Overview
 
-| Module | Description |
-|--------|-------------|
-| **Team Management** | Advanced team and member management with split-view layouts |
-| **Core Work Management** | Drag-and-drop reorderable core work items |
-| **Impact Stats Management** | Statistical data management with real-time updates |
-| **Programs Management** | Educational programs and course management |
-| **Articles Management** | Content management for articles and publications |
-| **Authentication System** | Firebase-powered secure authentication |
+### Technology Stack
+- **Frontend**: React 19.1 with TypeScript 5.8, Vite 7.1 build system
+- **Backend**: Firebase Firestore, Authentication, and Hosting
+- **Styling**: Tailwind CSS v4.1 with custom design system
+- **State Management**: Custom hooks with React state patterns
+- **Routing**: React Router with protected route guards
 
-## Team Management System
+### Core Modules
 
-The Team Management module includes:
+**TeamManager**: Complete team and member management system with CRUD operations, drag-and-drop reordering, confirmation workflows, and expert mode for direct Firestore field editing.
 
-### Core Features
-- **Split-Layout Views**: 70-30 team view, 60-40 member view
-- **Visual Selection States**: Orange/amber theming with hover effects
-- **Clickable Cards**: Interactive cards with visual indicators
-- **Member Count Display**: Real-time member counts per team
-- **Confirmation Dialogs**: Delete confirmations with impact details
+**ArticlesManager**: Article content management with pagination, inline editing, tag management, and comprehensive change tracking with confirmation dialogs.
 
-### Interface Features
-- **Responsive Layouts**: Grid systems that adapt to selections
-- **Visual Indicators**: Arrows and action hints for user guidance
-- **Consistent Styling**: Orange-amber color scheme throughout
-- **Smooth Transitions**: 300ms animations for state changes
-- **Typography System**: Consistent font hierarchy
+**Shared Components**: Reusable UI components, form elements, confirmation dialogs, and layout systems with consistent styling patterns.
 
-### Functionality
-- **Dual-Panel System**: Team and member detail panels
-- **State Management**: Proper state handling when switching contexts
-- **Drag-and-Drop**: Reorderable items with Firebase sync
-- **Real-Time Updates**: Changes reflected immediately
-- **Expert Mode**: Direct Firestore field editing
-
-## 🛠 Technical Architecture
-
-### Core Technologies
-```typescript
-Frontend Stack:
-├── React 18.3         // React with modern features
-├── TypeScript 5.0+    // Type safety and modern JavaScript  
-├── Vite 5.0          // Build tool with HMR
-├── Tailwind CSS v4   // Utility-first CSS framework
-└── React Router 6    // Client-side routing
-
-Backend & Services:
-├── Firebase v10      // Firebase SDK
-├── Firestore        // NoSQL database
-├── Firebase Auth     // Authentication system
-└── Firebase Hosting  // Deployment platform
-
-Libraries:
-├── @hello-pangea/dnd // Drag-and-drop functionality
-├── React Beautiful DnD // Reordering interactions
-└── Custom Hooks      // Reusable state management
-```
-
-### Design System
-```css
-/* ChiEAC Professional Color Palette */
-Primary Colors:
-├── Orange: #f97316 (orange-500)
-├── Amber: #f59e0b (amber-500)  
-├── Slate: #0f172a (slate-900)
-└── Gradient: from-orange-500/20 to-amber-500/20
-
-Interactive States:
-├── Hover: border-orange-500/40
-├── Selected: border-orange-500/50
-├── Shadow: shadow-orange-500/20
-└── Backdrop: backdrop-blur-sm
-```
-
-## 🚀 Installation & Setup
+## Installation
 
 ### Prerequisites
-- Node.js 18+ and npm/yarn
-- Firebase project with Firestore and Auth enabled
-- Modern browser with ES2022 support
+- Node.js 18+ with npm or yarn
+- Firebase project with Firestore and Authentication enabled
+- Modern browser supporting ES2022
 
-### 1. Clone and Install
+### Setup Process
+
+1. **Clone and install dependencies**
+   ```bash
+   git clone [repository-url]
+   cd cms-chieac
+   npm install
+   ```
+
+2. **Configure Firebase**
+   Create `.env` file with Firebase configuration:
+   ```env
+   VITE_FIREBASE_API_KEY=your_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   VITE_FIREBASE_APP_ID=your_app_id
+   VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+   ```
+
+3. **Initialize Firestore collections**
+   Required collections: `teams`, `team_members`, `articles`, `core_work`, `impact_stats`, `programs`
+
+4. **Development server**
+   ```bash
+   npm run dev
+   ```
+
+## Development Commands
+
 ```bash
-git clone [repository-url]
-cd cms-chieac
-npm install
+npm run dev          # Start development server with hot reload
+npm run build        # Production build
+npm run preview      # Preview production build locally
+npm run lint         # ESLint code analysis
+npx tsc --noEmit     # TypeScript type checking
 ```
 
-### 2. Firebase Configuration
-Create your Firebase configuration in `src/config/firebase.ts`:
-
-```typescript
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-
-const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "your-app-id"
-};
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-```
-
-### 3. Firestore Collections Setup
-The CMS expects these Firestore collections:
-
-```typescript
-// Collection Structure
-├── teams/                    // Team documents
-│   ├── {teamId}
-│   │   ├── team_name: string
-│   │   ├── team_code: string  
-│   │   ├── team_description: string
-│   │   └── order: number
-│
-├── teamMembers/              // Team member documents  
-│   ├── {memberId}
-│   │   ├── member_name: string
-│   │   ├── member_title: string
-│   │   ├── member_team: string
-│   │   ├── member_bio: string
-│   │   ├── member_image_url: string
-│   │   └── order: number
-│
-├── home_coreWork/           // Core work items
-├── home_impactStats/        // Impact statistics
-├── programs/                // Educational programs
-└── medium_articles/         // Articles and content
-```
-
-### 4. Development Commands
-```bash
-# Start development server with HMR
-npm run dev
-
-# Type checking
-npm run type-check
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Lint and format
-npm run lint
-npm run format
-```
-
-## 📁 Project Architecture
+## Project Structure
 
 ```
 src/
-├── components/              # Reusable UI components
-│   ├── Layout.tsx          # Main application layout
-│   └── ui/                 # Shared UI components
-│
-├── pages/                  # Page-level components
-│   ├── Dashboard.tsx       # Analytics dashboard
-│   ├── TeamManager.tsx     # Advanced team management
-│   ├── CoreWorkManager.tsx # Core work operations
-│   ├── ProgramsManager.tsx # Programs management
-│   └── ArticlesManager.tsx # Content management
-│
-├── types/                  # TypeScript definitions
-│   └── index.ts           # All data models and interfaces
-│
-├── config/                 # Configuration files
-│   └── firebase.ts        # Firebase initialization
-│
-├── hooks/                  # Custom React hooks
-│   ├── useTeams.ts        # Team management state
-│   └── useFirestore.ts    # Firestore operations
-│
-├── utils/                  # Utility functions
-│   ├── validation.ts      # Form validation helpers
-│   └── constants.ts       # App-wide constants
-│
-└── styles/                 # Global styles and Tailwind config
-    ├── globals.css        # Global CSS variables
-    └── components.css     # Component-specific styles
+├── components/
+│   ├── Layout.tsx                    # Main application layout
+│   ├── TeamManager/                  # Team management module
+│   │   ├── TeamManager.tsx          # Main component
+│   │   ├── components/              # UI components
+│   │   ├── hooks/                   # State management hooks
+│   │   ├── types.ts                 # TypeScript definitions
+│   │   └── index.ts                 # Module exports
+│   └── ArticlesManager/             # Article management module
+│       ├── ArticlesManager.tsx      # Main component
+│       ├── components/              # UI components
+│       ├── hooks/                   # State management hooks
+│       ├── types.ts                 # TypeScript definitions
+│       └── index.ts                 # Module exports
+├── pages/                           # Route components
+├── config/                          # Firebase configuration
+├── types/                           # Global type definitions
+└── assets/                          # Static assets
 ```
 
-## 🎨 Team Management Features Deep Dive
+## Component Architecture
 
-### Split-Layout System
-```typescript
-// Dynamic layout calculations
-const teamLayoutClass = `${selectedTeamForView || teamRightPanelMode ? 'w-[70%]' : 'w-full'}`;
-const memberLayoutClass = `${selectedMemberForView || rightPanelMode ? 'w-[60%]' : 'w-full max-w-4xl'}`;
-```
+### TeamManager Module
+- **Modular Design**: Separate components for teams view, members view, forms, and dialogs
+- **State Management**: useTeamManager hook for data operations, useTeamHandlers for event handling, useConfirmationHandlers for dialog workflows
+- **Expert Mode**: Direct Firestore field editing with warning dialogs for advanced users
+- **Drag-and-Drop**: Reordering functionality with confirmation workflows
 
-### Visual Selection States
-```typescript
-// Professional selection styling
-const teamCardClass = isSelected 
-  ? 'border-orange-500/50 shadow-2xl shadow-orange-500/20 bg-gradient-to-br from-slate-900/80 to-slate-800/60'
-  : 'border-slate-700/50 hover:border-orange-500/40 hover:shadow-2xl hover:shadow-orange-500/15';
-```
+### ArticlesManager Module
+- **CRUD Operations**: Full create, read, update, delete functionality for articles
+- **Pagination System**: Configurable page size with navigation controls
+- **Inline Editing**: Form-based editing with change tracking and confirmation
+- **Tag Management**: Dynamic tag addition and removal with validation
 
-### State Management
-```typescript
-// Advanced state management for complex workflows
-const [selectedTeamForView, setSelectedTeamForView] = useState<Team | null>(null);
-const [selectedMemberForView, setSelectedMemberForView] = useState<TeamMember | null>(null);
-const [teamRightPanelMode, setTeamRightPanelMode] = useState<'view' | 'edit' | null>(null);
-const [rightPanelMode, setRightPanelMode] = useState<'view' | 'edit' | null>(null);
-```
+## Data Models
 
-## 📊 Data Models
+### Core Interfaces
 
-### Team Interface
 ```typescript
 interface Team {
   id: string;
@@ -236,51 +121,72 @@ interface Team {
   team_description: string;
   order: number;
 }
-```
 
-### Team Member Interface
-```typescript
 interface TeamMember {
   id: string;
   member_name: string;
   member_title: string;
   member_team: string;
-  member_bio: string;
-  member_image_url: string;
+  member_summary: string;
+  member_summary_short: string;
+  member_image_link?: string;
   order: number;
+}
+
+interface Article {
+  id: string;
+  title: string;
+  publishedAt: Date;
+  imageLink?: string;
+  mediumLink?: string;
+  articleTags: string[];
 }
 ```
 
-## 🔐 Authentication & Security
+## Firebase Configuration
 
-- **Firebase Authentication**: Secure email/password authentication
-- **Protected Routes**: Route guards prevent unauthorized access
-- **Session Management**: Automatic session handling with refresh
-- **Secure API**: All Firestore operations are authenticated
+### Firestore Collections
 
-## 🚀 Deployment
+**teams**: Team documents with name, code, description, and ordering
+**team_members**: Member documents with team associations and metadata  
+**articles**: Article documents with publication data and tag arrays
+**core_work**: Core work items with descriptions and ordering
+**impact_stats**: Statistical data with numbers and labels
+**programs**: Educational programs with details and metadata
+
+### Security Rules
+Implement Firestore security rules to restrict access to authenticated users and appropriate read/write permissions based on user roles.
+
+### Authentication
+Firebase Authentication with email/password provider. Protected routes ensure authenticated access to all CMS functionality.
+
+## Styling System
+
+### Design Tokens
+- **Primary Colors**: Orange (#f97316) and Amber (#f59e0b)
+- **Background**: Slate color scale (#0f172a to #1e293b)
+- **Interactive States**: Orange/amber variants with opacity levels
+- **Typography**: System font stack with consistent sizing scale
+
+### Component Patterns
+- Consistent spacing using Tailwind's spacing scale
+- Backdrop blur effects for modal overlays
+- Gradient backgrounds for visual hierarchy
+- Border radius standards for component consistency
+
+## Deployment
 
 ### Firebase Hosting
 ```bash
-# Install Firebase CLI
 npm install -g firebase-tools
-
-# Login and initialize
 firebase login
 firebase init hosting
-
-# Build and deploy
 npm run build
 firebase deploy
 ```
 
-### Environment Variables
-```env
-# .env.production
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-```
+### Environment Configuration
+Production deployment requires environment variables configured in Firebase hosting settings or through deployment environment.
 
 ---
 

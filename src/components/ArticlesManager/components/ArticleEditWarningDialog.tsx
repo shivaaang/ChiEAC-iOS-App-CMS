@@ -2,7 +2,7 @@
 //  ArticleEditWarningDialog.tsx
 //  ChiEAC
 //
-//  Warning dialog for article editing with TeamManager styling
+//  Warning dialog shown before editing articles
 //  Created by Shivaang Kumar on 8/18/25.
 //
 

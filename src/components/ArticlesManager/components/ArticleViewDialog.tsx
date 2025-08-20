@@ -7,7 +7,7 @@
 //
 
 import { useState } from 'react';
-import type { Article } from '../../../types';
+import type { Article } from '../types';
 import ArticleEditWarningDialog from './ArticleEditWarningDialog';
 import ArticleEditForm from './ArticleEditForm';
 import ArticlePublishConfirmationDialog from './ArticlePublishConfirmationDialog';

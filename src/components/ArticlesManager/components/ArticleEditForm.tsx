@@ -2,12 +2,12 @@
 //  ArticleEditForm.tsx
 //  ChiEAC
 //
-//  Form component for editing article fields with tag management
+//  Form component for editing article metadata with live preview
 //  Created by Shivaang Kumar on 8/18/25.
 //
 
-import { useState } from 'react';
-import type { Article } from '../../../types';
+import { useState, useEffect } from 'react';
+import type { Article } from '../types';
 
 interface ArticleEditFormProps {
   article: Article;

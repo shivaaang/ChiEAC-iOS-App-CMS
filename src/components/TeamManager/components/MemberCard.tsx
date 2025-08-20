@@ -2,8 +2,8 @@
 //  MemberCard.tsx
 //  ChiEAC
 //
-//  Individual team member card component
-//  Created by Shivaang Kumar on 8/17/25.
+//  Team member card component matching legacy layout exactly
+//  Created by Shivaang Kumar on 8/18/25.
 //
 
 import React from 'react';
@@ -12,130 +12,120 @@ import type { TeamMember } from '../types';
 interface MemberCardProps {
   member: TeamMember;
   index: number;
-  onEditMember: (member: TeamMember) => void;
-  onDeleteMember: (id: string) => void;
+  isSelected: boolean;
+  isReorderingMode: boolean;
   isDragging?: boolean;
+  onClick: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  dragHandleProps?: any;
 }
 
-export const MemberCard: React.FC<MemberCardProps> = ({
+export const MemberCard = React.forwardRef<HTMLDivElement, MemberCardProps>(({
   member,
   index,
-  onEditMember,
-  onDeleteMember,
-  isDragging = false
-}) => {
-  const getRoleIcon = (role: string) => {
-    switch (role.toLowerCase()) {
-      case 'lead':
-      case 'team lead':
-        return (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-          </svg>
-        );
-      case 'member':
-        return (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-        );
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role.toLowerCase()) {
-      case 'lead':
-      case 'team lead':
-        return 'from-amber-500 to-yellow-500 border-amber-400/40';
-      case 'member':
-        return 'from-blue-500 to-indigo-500 border-blue-400/40';
-      default:
-        return 'from-slate-500 to-gray-500 border-slate-400/40';
-    }
-  };
+  isSelected,
+  isReorderingMode,
+  isDragging = false,
+  onClick,
+  onEdit,
+  onDelete,
+  dragHandleProps,
+  ...props
+}, ref) => {
 
   return (
-    <div className={`group relative overflow-hidden rounded-xl backdrop-blur-sm border border-slate-700/50 transition-all duration-300 cursor-pointer transform hover:scale-[1.02] bg-gradient-to-br from-slate-900/60 to-slate-800/40 hover:border-orange-500/40 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 ${
-      isDragging ? 'shadow-2xl shadow-orange-500/30 scale-105' : ''
-    }`}>
+    <div
+      ref={ref}
+      {...props}
+      {...(isReorderingMode ? dragHandleProps : {})}
+      onClick={() => !isReorderingMode && onClick()}
+      className={`group relative backdrop-blur-sm border rounded-xl p-6 transition-all duration-300 shadow-lg ${
+        isReorderingMode 
+          ? 'cursor-grab active:cursor-grabbing border-blue-500/50 bg-slate-900/70' 
+          : 'cursor-pointer'
+      } ${
+        isSelected && !isReorderingMode
+          ? 'bg-slate-900/80 border-orange-500/50 shadow-2xl shadow-orange-500/20' 
+          : isReorderingMode
+          ? 'bg-slate-900/70 border-blue-500/30 hover:border-blue-400/50'
+          : 'bg-slate-900/60 border-slate-700 hover:bg-slate-800/60 hover:border-orange-500/50 hover:shadow-xl'
+      } ${isDragging ? 'shadow-2xl shadow-blue-500/30 scale-105' : ''}`}
+    >
+      {/* Gradient Overlay for selected state */}
+      {isSelected && !isReorderingMode && (
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-amber-500/10 rounded-xl pointer-events-none"></div>
+      )}
+
+      {/* Reordering mode overlay */}
+      {isReorderingMode && (
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl pointer-events-none"></div>
+      )}
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-
-      {/* Content */}
-      <div className="relative p-6">
-        {/* Header with role badge */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h4 className="font-bold text-white text-lg leading-tight mb-1 group-hover:text-orange-100 transition-colors duration-300">
-              {member.member_name}
-            </h4>
-            <p className="text-slate-400 text-sm">
-              {member.member_title}
-            </p>
-          </div>
-          
-          {/* Role Badge */}
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-white text-xs font-medium shadow-lg bg-gradient-to-br ${getRoleColor(member.member_title)}`}>
-            {getRoleIcon(member.member_title)}
-            <span>{member.member_title}</span>
-          </div>
+      {/* Drag indicator for reordering mode - top right */}
+      {isReorderingMode && (
+        <div className="absolute top-4 right-4 text-blue-400 opacity-70">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+          </svg>
         </div>
+      )}
 
-        {/* Bio */}
-        {member.member_summary && (
-          <div className="mb-4">
-            <p className="text-slate-300 text-sm leading-relaxed line-clamp-3">
-              {member.member_summary}
-            </p>
-          </div>
-        )}
-
-        {/* Order indicator */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-400">
-            <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold bg-slate-700 text-slate-300 border border-slate-600">
+      {/* Subtle clickable indicator - top right (only when not reordering) */}
+      {!isReorderingMode && (
+        <div className="absolute top-4 right-4 opacity-40 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
+          <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      )}
+      
+      <div className="relative z-10">
+        {/* Redesigned layout with order number below image */}
+        <div className="flex items-center space-x-6 pr-16">
+          {/* Member image section with order number below */}
+          <div className="flex-shrink-0 flex flex-col items-center space-y-3">
+            {/* Member image */}
+            {(member.member_image_link || member.imageURL) ? (
+              <img
+                src={member.member_image_link || member.imageURL}
+                alt={member.member_name || member.name}
+                className="w-16 h-16 rounded-full object-cover border-3 border-orange-500/40 shadow-lg"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border-3 border-slate-500/40 flex items-center justify-center shadow-lg">
+                <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            )}
+            
+            {/* Order indicator - rounded square below image */}
+            <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-300 shadow-md ${
+              isReorderingMode 
+                ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-blue-500/30 border border-blue-300/30' 
+                : 'bg-gradient-to-br from-slate-600 to-slate-700 text-slate-300 shadow-slate-700/30 border border-slate-500/30'
+            }`}>
               {index + 1}
             </div>
-            <span className="text-xs font-medium">Display Order</span>
           </div>
-
-          {/* Action buttons */}
-          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEditMember(member);
-              }}
-              className="w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center transition-colors duration-200 shadow-lg"
-              title="Edit Member"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </button>
-            
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteMember(member.id);
-              }}
-              className="w-8 h-8 rounded-lg bg-red-600 hover:bg-red-500 text-white flex items-center justify-center transition-colors duration-200 shadow-lg"
-              title="Delete Member"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </button>
+          
+          {/* Member information - improved typography and spacing */}
+          <div className="flex-1 min-w-0">
+            <h3 className="font-bold text-white text-xl leading-tight group-hover:text-orange-100 transition-colors duration-300 mb-1">
+              {member.member_name || member.name}
+            </h3>
+            <p className="text-orange-400 text-base font-medium mb-2">
+              {member.member_title || member.title}
+            </p>
+            <p className="text-slate-300 text-sm leading-relaxed group-hover:text-slate-200 transition-colors duration-300 line-clamp-2">
+              {member.member_summary_short || member.bioShort || 'No bio available'}
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
-};
+});
+
+MemberCard.displayName = 'MemberCard';

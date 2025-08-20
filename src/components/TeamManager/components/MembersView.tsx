@@ -2,209 +2,235 @@
 //  MembersView.tsx
 //  ChiEAC
 //
-//  Members view section with drag-and-drop reordering
-//  Created by Shivaang Kumar on 8/17/25.
+//  Members view section matching legacy layout exactly
+//  Created by Shivaang Kumar on 8/18/25.
 //
 
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import type { DropResult } from '@hello-pangea/dnd';
 import { MemberCard } from './MemberCard';
+import { TeamHeader } from './TeamHeader';
 import type { Team, TeamMember } from '../types';
 
 interface MembersViewProps {
   selectedTeam: Team | null;
   teamMembers: TeamMember[];
   isReorderingMode: boolean;
+  selectedMemberForView: TeamMember | null;
+  rightPanelMode: 'view' | 'edit' | null;
   onEditMember: (member: TeamMember) => void;
   onDeleteMember: (id: string) => void;
   onMemberDragEnd: (result: DropResult) => void;
   onToggleReorderMode: () => void;
   onCreateMember: () => void;
   onBackToTeams: () => void;
+  onCloseRightPanel: () => void;
+  onEnterReorderingMode: () => void;
+  onHandleDoneReordering: () => void;
+  onCancelReordering: () => void;
+  onHandleMemberCardClick: (member: TeamMember) => void;
+  onEditTeam: (team: Team) => void;
+  onDeleteTeam: (id: string) => void;
 }
 
 export const MembersView: React.FC<MembersViewProps> = ({
   selectedTeam,
-  teamMembers,
+  teamMembers, // This is already filtered members from team manager
   isReorderingMode,
+  selectedMemberForView,
+  rightPanelMode,
   onEditMember,
   onDeleteMember,
   onMemberDragEnd,
-  onToggleReorderMode,
+  onToggleReorderMode: _onToggleReorderMode,
   onCreateMember,
-  onBackToTeams
+  onBackToTeams,
+  onCloseRightPanel,
+  onEnterReorderingMode,
+  onHandleDoneReordering,
+  onCancelReordering,
+  onHandleMemberCardClick,
+  onEditTeam,
+  onDeleteTeam
 }) => {
-  if (!selectedTeam) {
-    return (
-      <div className="text-center py-16">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center mx-auto mb-6">
-          <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-semibold text-slate-300 mb-2">No team selected</h3>
-        <p className="text-slate-400 mb-6">Select a team to view and manage its members</p>
-        <button
-          onClick={onBackToTeams}
-          className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-medium rounded-xl transition-all duration-300 shadow-lg shadow-orange-500/30 flex items-center gap-2 mx-auto hover:scale-105"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Teams
-        </button>
-      </div>
-    );
-  }
-
-  const filteredMembers = teamMembers.filter(member => 
-    member.member_team === selectedTeam.team_code || member.team === selectedTeam.team_code
-  );
+  // Use the already filtered members passed from team manager
+  const filteredMembers = teamMembers;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onBackToTeams}
-            className="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300 shadow-lg"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-1">
-              {selectedTeam.team_name} Members
-            </h2>
-            <p className="text-slate-400">
-              {filteredMembers.length} {filteredMembers.length === 1 ? 'member' : 'members'} total
-            </p>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          {/* Reorder Mode Toggle */}
-          {filteredMembers.length > 1 && (
-            <button
-              onClick={onToggleReorderMode}
-              className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 shadow-lg flex items-center gap-2 ${
-                isReorderingMode
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-blue-500/30'
-                  : 'bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-slate-200 shadow-slate-500/20'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-              </svg>
-              {isReorderingMode ? 'Exit Reorder' : 'Reorder Members'}
-            </button>
-          )}
+    <div>
+      {/* Use TeamHeader component instead of inline header */}
+      <TeamHeader
+        onBackToTeams={onBackToTeams}
+        selectedTeam={selectedTeam}
+        filteredMembers={filteredMembers}
+        isReorderingMode={isReorderingMode}
+        onCreateMember={onCreateMember}
+        onEnterReorderingMode={onEnterReorderingMode}
+        onEditTeam={onEditTeam}
+        onDeleteTeam={onDeleteTeam}
+        onHandleDoneReordering={onHandleDoneReordering}
+        onCancelReordering={onCancelReordering}
+      />
 
-          {/* Create Member Button */}
-          <button
-            onClick={onCreateMember}
-            className="px-6 py-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-medium rounded-xl transition-all duration-300 shadow-lg shadow-orange-500/30 flex items-center gap-2 hover:scale-105"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Add Member
-          </button>
-        </div>
-      </div>
+      {/* Main content area with dynamic layout */}
+      <div className={`flex gap-6 min-h-[600px] ${selectedMemberForView || rightPanelMode ? '' : 'justify-center'}`}>
+        {/* Left side: Member cards */}
+        <div className={`${selectedMemberForView || rightPanelMode ? 'w-[60%]' : 'w-full'} transition-all duration-300`}>
 
-      {/* Team Info Card */}
-      <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/40 border border-slate-700/50 rounded-2xl p-6 backdrop-blur-sm">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+        {!selectedTeam ? (
+          <div className="text-center py-12 text-slate-400 bg-slate-900/40 rounded-xl backdrop-blur-sm border border-slate-700">
+            <div className="text-lg">No team selected</div>
           </div>
-          <div>
-            <h3 className="text-xl font-bold text-white mb-1">{selectedTeam.team_name}</h3>
-            <p className="text-slate-400 text-sm">Team Code: {selectedTeam.team_code}</p>
-          </div>
+        ) : (
+          <DragDropContext onDragEnd={onMemberDragEnd}>
+            <Droppable droppableId="teamMembers" isDropDisabled={!isReorderingMode}>
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="space-y-3"
+                >
+                  {filteredMembers.map((member, index) => {
+                    const isSelected = selectedMemberForView?.id === member.id;
+                    return (
+                      <Draggable key={member.id} draggableId={member.id} index={index} isDragDisabled={!isReorderingMode}>
+                        {(provided, snapshot) => (
+                          <MemberCard
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            dragHandleProps={isReorderingMode ? provided.dragHandleProps : undefined}
+                            member={member}
+                            index={index}
+                            isSelected={isSelected}
+                            isReorderingMode={isReorderingMode}
+                            isDragging={snapshot.isDragging}
+                            onClick={() => !isReorderingMode && onHandleMemberCardClick(member)}
+                            onEdit={() => onEditMember(member)}
+                            onDelete={() => onDeleteMember(member.id)}
+                          />
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
         </div>
-        <p className="text-slate-300 mt-4 leading-relaxed">
-          {selectedTeam.team_description}
-        </p>
-      </div>
 
-      {/* Members Grid */}
-      {filteredMembers.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center mx-auto mb-6">
-            <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No members yet</h3>
-          <p className="text-slate-400 mb-6">Add the first member to this team</p>
-          <button
-            onClick={onCreateMember}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-medium rounded-xl transition-all duration-300 shadow-lg shadow-orange-500/30 flex items-center gap-2 mx-auto hover:scale-105"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Add First Member
-          </button>
-        </div>
-      ) : isReorderingMode ? (
-        <DragDropContext onDragEnd={onMemberDragEnd}>
-          <Droppable droppableId="members" direction="vertical">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="space-y-4"
-              >
-                {filteredMembers.map((member, index) => (
-                  <Draggable
-                    key={member.id}
-                    draggableId={member.id}
-                    index={index}
+        {/* Right side: Member details view or Edit form (40%) */}
+        {(selectedMemberForView || rightPanelMode) && (
+          <div className="w-[40%]">
+            {rightPanelMode === 'view' && selectedMemberForView && (() => {
+              // Find the latest member data from the current team members
+              const currentMember = filteredMembers.find(m => m.id === selectedMemberForView.id);
+              // Only show member details if the member belongs to the current team
+              if (!currentMember) return null;
+              return (
+              <div className="p-6 rounded-xl bg-slate-900/60 backdrop-blur-sm border border-slate-700 shadow-lg sticky top-6">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="font-semibold text-white text-lg">Member Details</h3>
+                  <button
+                    onClick={onCloseRightPanel}
+                    className="text-slate-400 hover:text-white transition-colors duration-200"
                   >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <MemberCard
-                          member={member}
-                          index={index}
-                          onEditMember={onEditMember}
-                          onDeleteMember={onDeleteMember}
-                          isDragging={snapshot.isDragging}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                {/* Member Image */}
+                {currentMember.member_image_link && (
+                  <div className="flex justify-center mb-6">
+                    <img
+                      src={currentMember.member_image_link}
+                      alt={currentMember.member_name}
+                      className="w-32 h-32 rounded-full object-cover border-4 border-orange-500/30"
+                    />
+                  </div>
+                )}
+                
+                {/* Member Information */}
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-white text-xl text-center mb-2">
+                      {currentMember.member_name}
+                    </h4>
+                    <p className="text-orange-400 text-lg font-medium text-center">
+                      {currentMember.member_title}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-slate-300 mb-2">Member Description</h5>
+                    <p className="text-orange-300 font-mono text-sm">
+                      {currentMember.member_summary || 'No description available'}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-slate-300 mb-2">Member Description Summary</h5>
+                    <p className="text-orange-300 font-mono text-sm">
+                      {currentMember.member_summary_short || 'No summary available'}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-slate-300 mb-2">Member Image Source</h5>
+                    <a 
+                      href={currentMember.member_image_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-orange-300 font-mono text-sm hover:text-orange-200 hover:underline transition-colors duration-200"
+                    >
+                      {currentMember.member_image_link || 'No image source available'}
+                    </a>
+                  </div>
+                  
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-slate-300 mb-2">Team</h5>
+                    <p className="text-orange-300 font-mono text-sm">
+                      {currentMember.member_team}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-slate-300 mb-2">ID</h5>
+                    <p className="text-orange-300 font-mono text-sm">
+                      {currentMember.id}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Action Buttons */}
+                <div className="flex space-x-3 mt-6">
+                  <button
+                    onClick={() => onEditMember(currentMember)}
+                    className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-2 rounded-lg font-medium hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25"
+                  >
+                    Edit Member
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteMember(currentMember.id);
+                    }}
+                    className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                  >
+                    Delete Member
+                  </button>
+                </div>
               </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredMembers.map((member, index) => (
-            <MemberCard
-              key={member.id}
-              member={member}
-              index={index}
-              onEditMember={onEditMember}
-              onDeleteMember={onDeleteMember}
-            />
-          ))}
-        </div>
-      )}
+              );
+            })()}
+
+          </div>
+        )}
+      </div>
     </div>
   );
 };

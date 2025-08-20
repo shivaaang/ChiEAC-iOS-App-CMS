@@ -2,7 +2,7 @@
 //  index.ts
 //  ChiEAC
 //
-//  Type definitions for the ChiEAC CMS application
+//  Global type definitions for the ChiEAC CMS application
 //  Created by Shivaang Kumar on 8/18/25.
 //
 
