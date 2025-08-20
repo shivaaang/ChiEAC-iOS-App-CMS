@@ -31,8 +31,11 @@ export default function ProgramsManager() {
     title: '',
     subtitle: '',
     description: '',
+    category: '',
     benefits: [''],
     impact: [''],
+    status: 'active',
+    isVisible: true,
     icon: 'graduationcap.fill',
     contactEmail: ''
   });
@@ -62,8 +65,8 @@ export default function ProgramsManager() {
     try {
       const programData = {
         ...formData,
-        benefits: formData.benefits.filter(b => b.trim() !== ''),
-        impact: formData.impact.filter(i => i.trim() !== ''),
+        benefits: formData.benefits.filter((b: string) => b.trim() !== ''),
+        impact: formData.impact.filter((i: string) => i.trim() !== ''),
         order: editingProgram ? editingProgram.order : programs.length
       };
 
@@ -79,8 +82,11 @@ export default function ProgramsManager() {
         title: '',
         subtitle: '',
         description: '',
+        category: '',
         benefits: [''],
         impact: [''],
+        status: 'active',
+        isVisible: true,
         icon: 'graduationcap.fill',
         contactEmail: ''
       });
@@ -96,8 +102,11 @@ export default function ProgramsManager() {
       title: program.title,
       subtitle: program.subtitle,
       description: program.description,
+      category: program.category,
       benefits: program.benefits.length > 0 ? program.benefits : [''],
       impact: program.impact.length > 0 ? program.impact : [''],
+      status: program.status,
+      isVisible: program.isVisible,
       icon: program.icon,
       contactEmail: program.contactEmail
     });
@@ -151,14 +160,14 @@ export default function ProgramsManager() {
   const updateListItem = (field: 'benefits' | 'impact', index: number, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: prev[field].map((item, i) => i === index ? value : item)
+      [field]: prev[field].map((item: string, i: number) => i === index ? value : item)
     }));
   };
 
   const removeListItem = (field: 'benefits' | 'impact', index: number) => {
     setFormData(prev => ({
       ...prev,
-      [field]: prev[field].filter((_, i) => i !== index)
+      [field]: prev[field].filter((_: string, i: number) => i !== index)
     }));
   };
 
@@ -439,8 +448,11 @@ export default function ProgramsManager() {
                       title: '',
                       subtitle: '',
                       description: '',
+                      category: '',
                       benefits: [''],
                       impact: [''],
+                      status: 'active',
+                      isVisible: true,
                       icon: 'graduationcap.fill',
                       contactEmail: ''
                     });

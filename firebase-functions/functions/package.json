@@ -1,0 +1,31 @@
+{
+  "name": "chieac-cms-backend-functions",
+  "version": "1.0.0",
+  "description": "Firebase Functions for ChiEAC CMS backend - handles Medium RSS ingestion, form submission notifications, and other backend services",
+  "type": "module",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "NODE_OPTIONS=\"--no-deprecation\" tsc",
+    "build:watch": "NODE_OPTIONS=\"--no-deprecation\" tsc --watch",
+    "serve": "NODE_OPTIONS=\"--no-deprecation\" npm run build && NODE_OPTIONS=\"--no-deprecation\" firebase emulators:start --only functions",
+    "shell": "NODE_OPTIONS=\"--no-deprecation\" npm run build && NODE_OPTIONS=\"--no-deprecation\" firebase functions:shell",
+    "start": "NODE_OPTIONS=\"--no-deprecation\" npm run shell",
+    "deploy": "NODE_OPTIONS=\"--no-deprecation\" firebase deploy --only functions",
+    "logs": "NODE_OPTIONS=\"--no-deprecation\" firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.3.6",
+    "firebase-admin": "^12.1.0",
+    "firebase-functions": "^6.4.0",
+    "googleapis": "^156.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^5.1.0"
+  },
+  "private": true
+}

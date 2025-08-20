@@ -6,24 +6,329 @@
 [![Firebase](https://img.shields.io/badge/Firebase-12.1-orange.svg)](https://firebase.google.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-teal.svg)](https://tailwindcss.com/)
 
-A React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Provides modular architecture for team management, article content operations, and administrative functionality.
+A modern, professional React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Features complete team management, automated article ingestion from Medium, form submission handling with email notifications, and comprehensive Firebase Functions backend.
 
-## Architecture Overview
+## 🎯 What's Been Built
+
+This CMS currently provides **three fully implemented and production-ready modules**:
+
+### ✅ **Form Submissions Management**
+- Complete form data collection and management system
+- Real-time Firebase Firestore integration
+- Professional email notifications via Gmail API
+- Automated triggers for immediate notification delivery
+
+### ✅ **Articles Management** 
+- Automated Medium RSS feed ingestion (hourly)
+- Manual article fetching with smart auto-refresh
+- Complete CRUD operations with pagination
+- Tag management and article organization
+- Direct integration with Firebase Functions backend
+
+### ✅ **Team Management**
+- Full team and member CRUD operations
+- Drag-and-drop reordering functionality
+- Expert mode for advanced Firestore field editing
+- Comprehensive confirmation workflows
+- Real-time database synchronization
+
+### 🚀 **Firebase Functions Backend**
+- Professional serverless architecture on Firebase Functions v2
+- Automated article processing and synchronization
+- Gmail OAuth 2.0 integration for email notifications
+- Comprehensive error handling and monitoring
+- **[Complete Documentation →](./firebase-functions/README.md)**
+
+---
+
+## 🏗️ Architecture Overview
 
 ### Technology Stack
 - **Frontend**: React 19.1 with TypeScript 5.8, Vite 7.1 build system
-- **Backend**: Firebase Firestore, Authentication, and Hosting
-- **Styling**: Tailwind CSS v4.1 with custom design system
-- **State Management**: Custom hooks with React state patterns
-- **Routing**: React Router with protected route guards
+- **Backend**: Firebase Firestore, Authentication, and Cloud Functions
+- **Serverless Functions**: Firebase Functions v2 with Node.js 22 runtime
+- **Styling**: Tailwind CSS v4.1 with custom ChiEAC design system
+- **State Management**: Custom React hooks with type-safe patterns
+- **Email Service**: Gmail API with OAuth 2.0 authentication
 
-### Core Modules
+### Core Architecture Principles
+- **Modular Design**: Each feature is a self-contained module
+- **Type Safety**: Full TypeScript coverage with strict type checking
+- **Real-time Updates**: Smart auto-refresh without full page reloads
+- **Professional UX**: Confirmation dialogs and loading states throughout
+- **Serverless Backend**: Scalable Firebase Functions for all server operations
 
-**TeamManager**: Complete team and member management system with CRUD operations, drag-and-drop reordering, confirmation workflows, and expert mode for direct Firestore field editing.
+---
 
-**ArticlesManager**: Article content management with pagination, inline editing, tag management, and comprehensive change tracking with confirmation dialogs.
+## 📦 Installation & Setup
 
-**Shared Components**: Reusable UI components, form elements, confirmation dialogs, and layout systems with consistent styling patterns.
+### Prerequisites
+- Node.js 18+ with npm
+- Firebase project with Firestore and Authentication enabled
+- Gmail account for email notifications (optional)
+
+### 1. Clone and Install
+```bash
+git clone [repository-url]
+cd cms-chieac
+npm install
+```
+
+### 2. Firebase Configuration
+Create `.env` file with your Firebase project configuration:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
+
+### 3. Initialize Firestore Collections
+The system requires these collections:
+- `teams` - Team management data
+- `team_members` - Team member information
+- `articles` - Medium articles and metadata
+- `contact_form_submissions` - Contact form submissions from iOS app
+
+### 4. Deploy Firebase Functions (Optional)
+For full functionality including automated article ingestion and email notifications:
+```bash
+cd firebase-functions
+npm install
+NODE_OPTIONS="--no-deprecation" firebase deploy --only functions
+```
+**[See complete Firebase Functions setup →](./firebase-functions/README.md)**
+
+### 5. Start Development
+```bash
+npm run dev
+```
+
+---
+
+## 🚀 Development Commands
+
+```bash
+npm run dev          # Start development server with hot reload
+npm run build        # Production build with TypeScript compilation
+npm run preview      # Preview production build locally
+npm run lint         # ESLint code analysis with React rules
+```
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── Layout.tsx                    # Main application layout
+│   ├── TeamManager/                  # 🟢 COMPLETE: Team & member management
+│   │   ├── TeamManager.tsx          # Main component with routing
+│   │   ├── components/              # UI components (15+ components)
+│   │   ├── hooks/                   # State management hooks
+│   │   ├── types.ts                 # TypeScript definitions
+│   │   └── index.ts                 # Module exports
+│   └── ArticlesManager/             # 🟢 COMPLETE: Article management
+│       ├── components/              # UI components with pagination
+│       ├── hooks/                   # Article fetching and management
+│       └── index.ts                 # Module exports
+├── pages/
+│   ├── TeamManager.tsx              # 🟢 Team management page
+│   ├── ArticlesManager.tsx          # 🟢 Articles management page
+│   ├── Dashboard.tsx                # 🟢 Main dashboard
+│   ├── LoginPage.tsx                # 🟢 Authentication
+│   ├── CoreWorkManager.tsx          # 🔶 Boilerplate (not implemented)
+│   ├── ImpactStatsManager.tsx       # 🔶 Boilerplate (not implemented)
+│   └── ProgramsManager.tsx          # 🔶 Boilerplate (not implemented)
+├── config/
+│   └── firebase.ts                  # 🟢 Firebase configuration
+├── types/
+│   └── index.ts                     # 🟢 Global TypeScript definitions
+└── utils/
+    └── dateUtils.ts                 # 🟢 Date formatting utilities
+
+firebase-functions/                   # 🟢 COMPLETE: Serverless backend
+├── functions/src/
+│   ├── articleManager/              # Medium RSS processing
+│   ├── emailNotifications/          # Gmail API integration
+│   ├── shared/                      # Common utilities
+│   └── index.ts                     # Function exports
+├── README.md                        # Complete backend documentation
+├── README_Articles.md               # Article system documentation
+└── README_Email.md                  # Email system documentation
+```
+
+**Legend:**
+- 🟢 **Complete & Production Ready**
+- 🔶 **Boilerplate Only** (planned for future development)
+
+---
+
+## 🎯 Core Features
+
+### Form Submissions System
+- **Real-time Collection**: Firestore integration for form data storage
+- **Email Notifications**: Automated Gmail notifications via Firebase Functions
+- **Professional Templates**: HTML email templates with ChiEAC branding
+- **OAuth Security**: Gmail API with secure refresh token management
+
+### Articles Management System
+- **Medium Integration**: Automated hourly RSS feed processing
+- **Smart Auto-Refresh**: Real-time updates without page reloads
+- **Manual Fetch**: On-demand article fetching with visual feedback
+- **Tag Management**: Dynamic article tagging and organization
+- **Pagination**: Professional pagination with configurable page sizes
+
+### Team Management System
+- **Drag & Drop**: Intuitive reordering for teams and members
+- **Expert Mode**: Advanced Firestore field editing with safety warnings
+- **Confirmation Workflows**: Professional UX with confirmation dialogs
+- **Real-time Sync**: Immediate database updates with optimistic UI
+
+---
+
+## 🔧 Firebase Functions Backend
+
+The CMS includes a comprehensive serverless backend built with Firebase Functions v2. This provides:
+
+### Article Processing
+- **Automated Ingestion**: Hourly Medium RSS feed processing
+- **Duplicate Prevention**: Smart URL-based deduplication
+- **Manual Triggers**: On-demand article fetching via HTTP endpoints
+- **Error Recovery**: Comprehensive error handling and retry logic
+
+### Email Notification System
+- **Gmail Integration**: Professional email delivery via Gmail API
+- **OAuth 2.0 Security**: Secure authentication with automatic token refresh
+- **Form Triggers**: Firestore triggers for immediate notification delivery
+- **HTML Templates**: Branded email templates with form data
+
+### **[📖 Complete Firebase Functions Documentation →](./firebase-functions/README.md)**
+
+**Quick Links:**
+- **[Article System Details →](./firebase-functions/README_Articles.md)**
+- **[Email System Details →](./firebase-functions/README_Email.md)**
+
+---
+
+## 📊 Data Models
+
+### Core Interfaces (Implemented)
+
+```typescript
+// Team Management
+interface Team {
+  id: string;
+  team_name: string;
+  team_code: string;
+  team_description: string;
+  order: number;
+}
+
+interface TeamMember {
+  id: string;
+  member_name: string;
+  member_title: string;
+  member_team: string;
+  member_summary: string;
+  member_image_link?: string;
+  order: number;
+}
+
+// Article Management
+interface Article {
+  id: string;
+  title: string;
+  publishedAt: Date;
+  imageLink?: string;
+  mediumLink?: string;
+  articleTags: string[];
+}
+
+// Form Submissions
+interface FormSubmission {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  message: string;
+  source: string;
+  submittedAt: Date;
+  status: 'incomplete' | 'complete';
+  readAt?: Date;
+}
+```
+
+---
+
+## 🎨 Design System
+
+### ChiEAC Brand Colors
+- **Primary**: Orange (#f97316) and Amber (#f59e0b)
+- **Background**: Slate scale (#0f172a to #1e293b)
+- **Interactive**: Orange/amber with opacity variations
+- **Status**: Success (green), warning (yellow), error (red)
+
+### Component Patterns
+- **Consistent Spacing**: Tailwind's 4px grid system
+- **Modal Overlays**: Backdrop blur with gradient backgrounds
+- **Professional Typography**: System fonts with proper hierarchy
+- **Interactive States**: Hover, focus, and active state styling
+
+---
+
+## 🚀 Deployment
+
+### Frontend Deployment (Firebase Hosting)
+```bash
+npm run build
+firebase deploy --only hosting
+```
+
+### Backend Deployment (Firebase Functions)
+```bash
+cd firebase-functions
+NODE_OPTIONS="--no-deprecation" firebase deploy --only functions
+```
+
+### Environment Variables
+Configure production environment variables in Firebase hosting settings:
+- Firebase configuration
+- Email service credentials (if using email notifications)
+
+---
+
+## 🔄 Current Development Status
+
+### ✅ **Completed & Production Ready**
+- **Form Submissions**: Complete system with email notifications
+- **Articles Management**: Full CRUD with Medium integration
+- **Team Management**: Complete with drag-and-drop functionality
+- **Firebase Functions**: Professional backend with email and article services
+- **Authentication**: Firebase Auth with protected routes
+- **UI/UX**: Professional design system with ChiEAC branding
+
+### 🔶 **Planned for Future Development**
+- **Core Work Manager**: Currently boilerplate code
+- **Impact Stats Manager**: Currently boilerplate code  
+- **Programs Manager**: Currently boilerplate code
+
+---
+
+## 📞 Support & Documentation
+
+- **[Firebase Functions Complete Guide →](./firebase-functions/README.md)**
+- **[Article System Documentation →](./firebase-functions/README_Articles.md)**
+- **[Email System Documentation →](./firebase-functions/README_Email.md)**
+
+---
+
+**Built with ❤️ for ChiEAC** | Professional CMS Solution | React + TypeScript + Firebase Functions
 
 ## Installation
 
@@ -92,7 +397,18 @@ src/
 ├── pages/                           # Route components
 ├── config/                          # Firebase configuration
 ├── types/                           # Global type definitions
-└── assets/                          # Static assets
+├── assets/                          # Static assets
+└── utils/                           # Utility functions and services
+
+firebase-functions/                   # Firebase Functions serverless backend
+├── functions/
+│   ├── src/
+│   │   ├── index.ts                 # Function exports and HTTP endpoints
+│   │   ├── mediumProcessor.ts       # RSS feed processing logic
+│   │   └── firestoreSync.ts         # Database synchronization operations
+│   ├── package.json                 # Functions dependencies
+│   └── tsconfig.json                # Functions TypeScript configuration
+└── .firebaserc                      # Firebase project configuration
 ```
 
 ## Component Architecture
@@ -108,6 +424,13 @@ src/
 - **Pagination System**: Configurable page size with navigation controls
 - **Inline Editing**: Form-based editing with change tracking and confirmation
 - **Tag Management**: Dynamic tag addition and removal with validation
+
+### Firebase Functions Module
+- **Automated Content Ingestion**: Scheduled hourly RSS feed processing from Medium publications
+- **Manual Content Sync**: On-demand article fetching via HTTP endpoints with CMS integration
+- **Duplicate Prevention**: Smart content deduplication using canonical URL identification
+- **Lock Mechanisms**: Prevents overlapping executions during concurrent function invocations
+- **Serverless Architecture**: Node.js 22 runtime with TypeScript for type-safe cloud functions
 
 ## Data Models
 

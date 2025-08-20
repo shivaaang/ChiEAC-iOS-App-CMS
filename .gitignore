@@ -3,6 +3,7 @@ node_modules/
 
 # Build outputs
 dist/
+build/
 
 # Environment variables
 .env
@@ -11,16 +12,78 @@ dist/
 .env.test.local
 .env.production.local
 
+# Firebase Functions environment files (contains sensitive data)
+firebase-functions/functions/.env*
+firebase-functions/functions/credentials/
+
+# Firebase Functions compiled output
+firebase-functions/functions/lib/
+firebase-functions/functions/dist/
+
 # Logs
 *.log
-
-# macOS
-.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Firebase
 .firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# macOS
+.DS_Store
+.DS_Store?
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Firebase Functions credentials (security-sensitive)
+firebase-functions/functions/credentials/
 
 # Legacy/backup files
 *_legacy*
+*_backup*
+
+# Temporary files
+.tmp/
+temp/
 
 CLAUDE.md

@@ -10,6 +10,7 @@ import React from 'react';
 import type { Article } from './types';
 import { useArticlesManager } from './hooks/useArticlesManager';
 import ArticleViewDialog from './components/ArticleViewDialog';
+import FetchNowButton from './components/FetchNowButton';
 
 const ArticlesManager: React.FC = () => {
   const {
@@ -28,6 +29,7 @@ const ArticlesManager: React.FC = () => {
     articlesPerPage,
     
     // Actions
+    fetchArticles,
     updateArticle,
     deleteArticle,
     handleArticleClick,
@@ -52,12 +54,23 @@ const ArticlesManager: React.FC = () => {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
-          <h1 className="text-4xl font-bold mb-2">Articles Manager</h1>
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold mb-2">Articles Manager</h1>
+            </div>
+            <p className="text-slate-400 text-lg">
+              Manage and edit article content from Medium RSS feed
+            </p>
+          </div>
+          
+          {/* Fetch Now Button */}
+          <div className="flex-shrink-0">
+            <FetchNowButton 
+              onRefreshNeeded={fetchArticles}
+            />
+          </div>
         </div>
-        <p className="text-slate-400 text-lg">
-          Manage and edit article content from Medium RSS feed
-        </p>
       </div>
 
       {/* Articles List - Thin horizontal cards */}

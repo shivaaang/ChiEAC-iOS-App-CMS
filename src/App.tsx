@@ -17,6 +17,7 @@ import ImpactStatsManager from './pages/ImpactStatsManager';
 import TeamManager from './pages/TeamManager';
 import ProgramsManager from './pages/ProgramsManager';
 import ArticlesManager from './pages/ArticlesManager';
+import FormSubmissionsManager from './pages/FormSubmissionsManager';
 import Layout from './components/Layout';
 import './index.css';
 
@@ -58,6 +59,7 @@ function App() {
           <Route path="/team" element={<TeamManager />} />
           <Route path="/programs" element={<ProgramsManager />} />
           <Route path="/articles" element={<ArticlesManager />} />
+          <Route path="/form-submissions" element={<FormSubmissionsManager />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>

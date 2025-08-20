@@ -87,6 +87,16 @@ export default function Layout({ children }: LayoutProps) {
       ), 
       description: 'Content & stories' 
     },
+    { 
+      path: '/form-submissions', 
+      label: 'Form Submissions', 
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+        </svg>
+      ), 
+      description: 'Messages from the app' 
+    },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -99,8 +109,12 @@ export default function Layout({ children }: LayoutProps) {
         <div className="flex items-center px-6 py-8 border-b border-slate-800/60">
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <div className="w-8 h-8 bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-violet-500/25">
-                <span className="text-white font-bold text-sm">CE</span>
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-lg overflow-hidden">
+                <img 
+                  src="/chieac-logo.png" 
+                  alt="ChiEAC Logo" 
+                  className="w-6 h-6 object-contain"
+                />
               </div>
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-slate-900"></div>
             </div>

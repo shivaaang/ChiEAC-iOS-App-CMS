@@ -6,7 +6,7 @@
 //  Created by Shivaang Kumar on 8/18/25.
 //
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Article } from '../types';
 
 interface ArticleEditFormProps {

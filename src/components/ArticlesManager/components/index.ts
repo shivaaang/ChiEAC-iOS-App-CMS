@@ -4,3 +4,4 @@ export { default as ArticleEditForm } from './ArticleEditForm';
 export { default as ArticleEditWarningDialog } from './ArticleEditWarningDialog';
 export { default as ArticlePublishConfirmationDialog } from './ArticlePublishConfirmationDialog';
 export { default as ArticleDeleteConfirmationDialog } from './ArticleDeleteConfirmationDialog';
+export { default as FetchNowButton } from './FetchNowButton';
