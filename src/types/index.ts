@@ -61,10 +61,11 @@ export interface CoreWork {
 // Impact Statistics Types
 export interface ImpactStat {
   id: string;
-  title: string;
-  value: number;
-  unit: string;
-  description: string;
+  number: string;
+  label: string;
+  subtitle: string;
+  icon: string;
+  order: number;
   category: string;
   lastUpdated: Date;
   isVisible: boolean;
@@ -76,14 +77,8 @@ export interface ProgramInfo {
   title: string;
   subtitle: string;
   description: string;
-  category: string;
   benefits: string[];
   impact: string[];
-  status: 'active' | 'upcoming' | 'completed';
-  startDate?: Date;
-  endDate?: Date;
-  isVisible: boolean;
   icon: string;
-  contactEmail: string;
   order: number;
 }

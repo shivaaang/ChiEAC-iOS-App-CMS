@@ -1,16 +1,16 @@
 # ChiEAC CMS - Content Management System
 
-[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-7.1-purple.svg)](https://vitejs.dev/)
-[![Firebase](https://img.shields.io/badge/Firebase-12.1-orange.svg)](https://firebase.google.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-teal.svg)](https://tailwindcss.com/)
+[![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.1.2-purple.svg)](https://vitejs.dev/)
+[![Firebase](https://img.shields.io/badge/Firebase-12.1.0-orange.svg)](https://firebase.google.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.12-teal.svg)](https://tailwindcss.com/)
 
-A modern, professional React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Features complete team management, automated article ingestion from Medium, form submission handling with email notifications, and comprehensive Firebase Functions backend.
+A modern, professional React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Features complete team management, automated article ingestion from Medium, comprehensive programs management, form submission handling with email notifications, and comprehensive Firebase Functions backend.
 
 ## 🎯 What's Been Built
 
-This CMS currently provides **three fully implemented and production-ready modules**:
+This CMS currently provides **four fully implemented and production-ready modules**:
 
 ### ✅ **Form Submissions Management**
 - Complete form data collection and management system
@@ -32,6 +32,13 @@ This CMS currently provides **three fully implemented and production-ready modul
 - Comprehensive confirmation workflows
 - Real-time database synchronization
 
+### ✅ **Programs Management**
+- Complete educational programs CRUD operations
+- Modular component architecture with dedicated dialogs
+- SF Symbol icon integration with validation warnings
+- Drag-and-drop reordering with conditional layouts
+- Card-based UI with emerald/teal theme design
+
 ### 🚀 **Firebase Functions Backend**
 - Professional serverless architecture on Firebase Functions v2
 - Automated article processing and synchronization
@@ -44,10 +51,10 @@ This CMS currently provides **three fully implemented and production-ready modul
 ## 🏗️ Architecture Overview
 
 ### Technology Stack
-- **Frontend**: React 19.1 with TypeScript 5.8, Vite 7.1 build system
+- **Frontend**: React 19.1.1 with TypeScript 5.8.3, Vite 7.1.2 build system
 - **Backend**: Firebase Firestore, Authentication, and Cloud Functions
 - **Serverless Functions**: Firebase Functions v2 with Node.js 22 runtime
-- **Styling**: Tailwind CSS v4.1 with custom ChiEAC design system
+- **Styling**: Tailwind CSS v4.1.12 with custom ChiEAC design system
 - **State Management**: Custom React hooks with type-safe patterns
 - **Email Service**: Gmail API with OAuth 2.0 authentication
 
@@ -91,6 +98,7 @@ The system requires these collections:
 - `teams` - Team management data
 - `team_members` - Team member information
 - `articles` - Medium articles and metadata
+- `programs` - Educational programs with benefits and impact data
 - `contact_form_submissions` - Contact form submissions from iOS app
 
 ### 4. Deploy Firebase Functions (Optional)
@@ -128,22 +136,32 @@ src/
 │   ├── Layout.tsx                    # Main application layout
 │   ├── TeamManager/                  # 🟢 COMPLETE: Team & member management
 │   │   ├── TeamManager.tsx          # Main component with routing
-│   │   ├── components/              # UI components (15+ components)
+│   │   ├── components/              # UI components (13 components)
 │   │   ├── hooks/                   # State management hooks
 │   │   ├── types.ts                 # TypeScript definitions
 │   │   └── index.ts                 # Module exports
-│   └── ArticlesManager/             # 🟢 COMPLETE: Article management
+│   ├── ArticlesManager/             # 🟢 COMPLETE: Article management
+│   │   ├── components/              # UI components with pagination
+│   │   ├── hooks/                   # Article fetching and management
+│   │   └── index.ts                 # Module exports
+│   ├── ProgramsManager/             # 🟢 COMPLETE: Programs management
+│   │   ├── ProgramsManager.tsx      # Main component
+│   │   ├── components/              # UI components (4 components)
+│   │   ├── types.ts                 # TypeScript definitions
+│   │   └── index.ts                 # Module exports
+│   └── FormSubmissionsManager/      # 🟢 COMPLETE: Form submissions management
 │       ├── components/              # UI components with pagination
-│       ├── hooks/                   # Article fetching and management
+│       ├── hooks/                   # Submission fetching and management
 │       └── index.ts                 # Module exports
 ├── pages/
 │   ├── TeamManager.tsx              # 🟢 Team management page
 │   ├── ArticlesManager.tsx          # 🟢 Articles management page
+│   ├── ProgramsManager.tsx          # 🟢 Programs management page
+│   ├── FormSubmissionsManager.tsx   # 🟢 Form submissions management page
 │   ├── Dashboard.tsx                # 🟢 Main dashboard
 │   ├── LoginPage.tsx                # 🟢 Authentication
 │   ├── CoreWorkManager.tsx          # 🔶 Boilerplate (not implemented)
-│   ├── ImpactStatsManager.tsx       # 🔶 Boilerplate (not implemented)
-│   └── ProgramsManager.tsx          # 🔶 Boilerplate (not implemented)
+│   └── ImpactStatsManager.tsx       # 🔶 Boilerplate (not implemented)
 ├── config/
 │   └── firebase.ts                  # 🟢 Firebase configuration
 ├── types/
@@ -188,6 +206,13 @@ firebase-functions/                   # 🟢 COMPLETE: Serverless backend
 - **Expert Mode**: Advanced Firestore field editing with safety warnings
 - **Confirmation Workflows**: Professional UX with confirmation dialogs
 - **Real-time Sync**: Immediate database updates with optimistic UI
+
+### Programs Management System
+- **Complete CRUD**: Add, edit, view, and delete educational programs
+- **Modular Architecture**: 4 separate components for maintainable code
+- **SF Symbol Integration**: Icon validation with professional warning system
+- **Card-based UI**: Modern emerald/teal themed design with responsive grids
+- **Drag & Drop Reordering**: Conditional layout switching for optimal UX
 
 ---
 
@@ -247,6 +272,18 @@ interface Article {
   imageLink?: string;
   mediumLink?: string;
   articleTags: string[];
+}
+
+// Programs Management
+interface ProgramInfo {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  benefits: string[];
+  impact: string[];
+  icon: string;
+  order: number;
 }
 
 // Form Submissions
@@ -309,14 +346,14 @@ Configure production environment variables in Firebase hosting settings:
 - **Form Submissions**: Complete system with email notifications
 - **Articles Management**: Full CRUD with Medium integration
 - **Team Management**: Complete with drag-and-drop functionality
+- **Programs Management**: Full CRUD with modular component architecture
 - **Firebase Functions**: Professional backend with email and article services
 - **Authentication**: Firebase Auth with protected routes
 - **UI/UX**: Professional design system with ChiEAC branding
 
 ### 🔶 **Planned for Future Development**
 - **Core Work Manager**: Currently boilerplate code
-- **Impact Stats Manager**: Currently boilerplate code  
-- **Programs Manager**: Currently boilerplate code
+- **Impact Stats Manager**: Currently boilerplate code
 
 ---
 
@@ -359,7 +396,7 @@ Configure production environment variables in Firebase hosting settings:
    ```
 
 3. **Initialize Firestore collections**
-   Required collections: `teams`, `team_members`, `articles`, `core_work`, `impact_stats`, `programs`
+   Required collections: `teams`, `team_members`, `articles`, `programs`, `core_work`, `impact_stats`
 
 4. **Development server**
    ```bash
@@ -425,6 +462,21 @@ firebase-functions/                   # Firebase Functions serverless backend
 - **Inline Editing**: Form-based editing with change tracking and confirmation
 - **Tag Management**: Dynamic tag addition and removal with validation
 
+### ProgramsManager Module
+- **Modular Design**: 4 separate components (ProgramCard, ProgramViewDialog, ProgramFormModal, ProgramDeleteConfirmationDialog)
+- **SF Symbol Integration**: Icon validation with amber warning system for mobile app compatibility
+- **Conditional Layouts**: Grid layout switches to vertical for drag-and-drop reordering mode
+- **Benefits & Impact Lists**: Dynamic list management with add/remove functionality
+- **Card-based UI**: Emerald/teal themed design following consistent design patterns
+- **Document Compliance**: Proper ID generation pattern matching Firebase best practices
+
+### FormSubmissionsManager Module
+- **Real-time Data**: Live form submission collection from iOS app
+- **Email Integration**: Automated email notifications via Firebase Functions
+- **Status Management**: Mark submissions as read/unread with timestamp tracking
+- **Pagination System**: Configurable page size with navigation controls
+- **Professional UI**: Clean submission cards with contact information display
+
 ### Firebase Functions Module
 - **Automated Content Ingestion**: Scheduled hourly RSS feed processing from Medium publications
 - **Manual Content Sync**: On-demand article fetching via HTTP endpoints with CMS integration
@@ -473,9 +525,10 @@ interface Article {
 **teams**: Team documents with name, code, description, and ordering
 **team_members**: Member documents with team associations and metadata  
 **articles**: Article documents with publication data and tag arrays
+**programs**: Educational program documents with benefits, impact, and SF Symbol icons
+**contact_form_submissions**: Form submission documents with user contact information and status
 **core_work**: Core work items with descriptions and ordering
 **impact_stats**: Statistical data with numbers and labels
-**programs**: Educational programs with details and metadata
 
 ### Security Rules
 Implement Firestore security rules to restrict access to authenticated users and appropriate read/write permissions based on user roles.
