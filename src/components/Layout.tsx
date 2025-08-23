@@ -6,7 +6,7 @@
 //  Created by Shivaang Kumar on 8/16/25.
 //
 
-import { type ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
@@ -17,6 +17,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -24,6 +25,14 @@ export default function Layout({ children }: LayoutProps) {
     } catch (error) {
       console.error('Error signing out:', error);
     }
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
   };
 
   const navItems = [
@@ -103,8 +112,110 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-950">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 z-40 w-64 h-screen bg-slate-900/95 backdrop-blur-xl border-r border-slate-800/60">
+      {/* Mobile Header */}
+      <div className="lg:hidden">
+        <div className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/60 sticky top-0 z-50">
+          <div className="flex items-center justify-between px-4 py-3">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-lg overflow-hidden">
+                  <img 
+                    src="/chieac-logo.png" 
+                    alt="ChiEAC Logo" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <h1 className="text-lg font-bold text-white">ChiEAC CMS</h1>
+            </div>
+            
+            {/* Mobile menu button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="p-2 text-slate-300 hover:text-white transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <div className="fixed inset-0 bg-black bg-opacity-50" onClick={closeMobileMenu}></div>
+            <div className="fixed left-0 top-0 w-64 h-full bg-slate-900/95 backdrop-blur-xl border-r border-slate-800/60 transform transition-transform duration-300">
+              {/* Mobile Logo */}
+              <div className="flex items-center px-6 py-8 border-b border-slate-800/60">
+                <div className="flex items-center space-x-3">
+                  <div className="relative">
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg overflow-hidden">
+                      <img 
+                        src="/chieac-logo.png" 
+                        alt="ChiEAC Logo" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <h1 className="text-xl font-bold text-white">ChiEAC CMS</h1>
+                </div>
+              </div>
+
+              {/* Mobile Navigation */}
+              <nav className="flex-1 px-6 py-6 space-y-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={closeMobileMenu}
+                    className={`group flex items-center px-3 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                      isActive(item.path)
+                        ? 'bg-orange-500/20 text-orange-400 shadow-lg shadow-orange-500/10'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <span className={`mr-3 transition-colors duration-200 ${
+                      isActive(item.path) ? 'text-orange-400' : 'text-slate-400 group-hover:text-slate-300'
+                    }`}>
+                      {item.icon}
+                    </span>
+                    <div>
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs text-slate-500 mt-0.5">{item.description}</div>
+                    </div>
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Mobile Logout */}
+              <div className="p-6 border-t border-slate-800/60">
+                <button
+                  onClick={() => {
+                    closeMobileMenu();
+                    handleLogout();
+                  }}
+                  className="flex items-center w-full px-3 py-3 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-xl transition-all duration-200"
+                >
+                  <svg className="w-5 h-5 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Log out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:fixed lg:left-0 lg:top-0 lg:z-40 lg:w-64 lg:h-screen lg:bg-slate-900/95 lg:backdrop-blur-xl lg:border-r lg:border-slate-800/60 lg:block">{/* Logo */}
         {/* Logo */}
         <div className="flex items-center px-6 py-8 border-b border-slate-800/60">
           <div className="flex items-center space-x-3">
@@ -215,9 +326,9 @@ export default function Layout({ children }: LayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 min-h-screen">
+      <main className="lg:ml-64 min-h-screen">
         {/* Top Header Bar */}
-        <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/60 sticky top-0 z-30">
+        <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/60 sticky top-0 z-30 hidden lg:block">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -249,7 +360,7 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Content Area */}
         <div className="bg-slate-950 min-h-screen">
-          <div className="p-6">
+          <div className="p-4 lg:p-6">
             {children}
           </div>
         </div>

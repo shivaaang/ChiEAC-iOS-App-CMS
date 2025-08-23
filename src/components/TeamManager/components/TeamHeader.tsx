@@ -63,14 +63,14 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({
     <div className="bg-gradient-to-br from-slate-800/90 via-slate-800/80 to-slate-900/90 backdrop-blur-md border border-slate-700/60 rounded-2xl shadow-2xl mb-8 overflow-hidden">
       {/* Single Row Header Layout - Matching Mockup Exactly */}
       <div className="p-4">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
           {/* Left Section: Back Button + Team Info */}
-          <div className="flex items-start space-x-4 flex-1 min-w-0">
+          <div className="flex flex-col sm:flex-row sm:items-start space-y-2 sm:space-y-0 sm:space-x-4 flex-1 min-w-0">
             {/* Back Button - aligned with top buttons */}
             <div className="flex-shrink-0">
               <button
                 onClick={onBackToTeams}
-                className="bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm border border-slate-600 hover:border-slate-500 min-w-[120px] flex items-center justify-center space-x-1"
+                className="bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm border border-slate-600 hover:border-slate-500 w-full sm:min-w-[120px] flex items-center justify-center space-x-1"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -92,31 +92,31 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({
             </div>
           </div>
 
-          {/* Middle Section: Team Code and Team ID - Fixed position with left margin */}
-          <div className="flex flex-col space-y-3 ml-8 mr-8 flex-shrink-0 self-center">
+          {/* Middle Section: Team Code and Team ID - Responsive layout */}
+          <div className="flex flex-col space-y-3 flex-1 lg:ml-8 lg:mr-8 lg:flex-shrink-0 lg:self-center">
             {/* Team Code Row */}
-            <div className="flex items-center space-x-3">
-              <label className="text-xs text-slate-400 uppercase tracking-wider font-medium text-right w-20 whitespace-nowrap">Team Code</label>
-              <div className="bg-slate-700/50 border border-slate-600 rounded px-3 py-1.5 w-48">
+            <div className="flex flex-col lg:flex-row lg:items-center space-y-1 lg:space-y-0 lg:space-x-3">
+              <label className="text-xs text-slate-400 uppercase tracking-wider font-medium lg:text-right lg:w-20 whitespace-nowrap">Team Code</label>
+              <div className="bg-slate-700/50 border border-slate-600 rounded px-3 py-1.5 w-full lg:w-48">
                 <span className="text-slate-200 font-mono text-sm">{selectedTeam.team_code}</span>
               </div>
             </div>
 
             {/* Team ID Row */}
-            <div className="flex items-center space-x-3">
-              <label className="text-xs text-slate-400 uppercase tracking-wider font-medium text-right w-20 whitespace-nowrap">Team ID</label>
-              <div className="bg-slate-700/50 border border-slate-600 rounded px-3 py-1.5 w-48">
+            <div className="flex flex-col lg:flex-row lg:items-center space-y-1 lg:space-y-0 lg:space-x-3">
+              <label className="text-xs text-slate-400 uppercase tracking-wider font-medium lg:text-right lg:w-20 whitespace-nowrap">Team ID</label>
+              <div className="bg-slate-700/50 border border-slate-600 rounded px-3 py-1.5 w-full lg:w-48">
                 <span className="text-slate-200 font-mono text-sm">{selectedTeam.id}</span>
               </div>
             </div>
           </div>
 
-          {/* Right Section: Action Buttons - Fixed position */}
-          <div className="grid grid-cols-2 gap-3 flex-shrink-0 self-center">
+          {/* Right Section: Action Buttons - Responsive layout */}
+          <div className="grid grid-cols-2 gap-3 w-full lg:w-auto lg:flex-shrink-0 lg:self-center">
             {/* Top Row */}
             <button
               onClick={() => onEditTeam(selectedTeam)}
-              className="bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm border border-slate-600 hover:border-slate-500 min-w-[120px] flex items-center justify-center space-x-1"
+              className="bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm border border-slate-600 hover:border-slate-500 lg:min-w-[120px] flex items-center justify-center space-x-1"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -126,7 +126,7 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({
 
             <button
               onClick={onCreateMember}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm flex items-center justify-center space-x-1 min-w-[120px] border border-orange-500"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm flex items-center justify-center space-x-1 lg:min-w-[120px] border border-orange-500"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -138,7 +138,7 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({
             {filteredMembers.length > 1 && !isReorderingMode && (
               <button
                 onClick={onEnterReorderingMode}
-                className="bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm border border-slate-600 hover:border-slate-500 flex items-center justify-center space-x-1 min-w-[120px]"
+                className="bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm border border-slate-600 hover:border-slate-500 flex items-center justify-center space-x-1 lg:min-w-[120px]"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -149,7 +149,7 @@ export const TeamHeader: React.FC<TeamHeaderProps> = ({
 
             <button
               onClick={() => onDeleteTeam(selectedTeam.id)}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm min-w-[120px] flex items-center justify-center space-x-1 border border-red-600"
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium transition-all duration-200 text-sm lg:min-w-[120px] flex items-center justify-center space-x-1 border border-red-600"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

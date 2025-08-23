@@ -103,7 +103,7 @@ const SubmissionCard: React.FC<FormSubmissionCardProps> = ({
   return (
     <div 
       className={`
-        p-6 rounded-lg border transition-all duration-200 cursor-pointer hover:border-slate-600
+        p-4 lg:p-6 rounded-lg border transition-all duration-200 cursor-pointer hover:border-slate-600
         ${submission.status === 'complete'
           ? 'bg-slate-800/50 border-slate-700/50' 
           : 'bg-slate-800 border-slate-600 shadow-lg'
@@ -111,7 +111,115 @@ const SubmissionCard: React.FC<FormSubmissionCardProps> = ({
       `}
       onClick={handleCardClick}
     >
-      <div className="flex items-center justify-between">
+      {/* Mobile Layout (vertical stack) */}
+      <div className="flex flex-col space-y-4 lg:hidden">
+        {/* Mobile Header - Date, Time, and Status */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="flex flex-col items-center text-center">
+              <span className="text-xl font-bold text-white">
+                {submission.submittedAt.getDate()}
+              </span>
+              <span className="text-xs text-slate-400 uppercase tracking-wide">
+                {submission.submittedAt.toLocaleDateString('en-US', { month: 'short' })}
+              </span>
+            </div>
+            
+            <div className="text-sm text-slate-400">
+              <div>{formatTime(submission.submittedAt)}</div>
+            </div>
+            
+            {submission.status === 'incomplete' && (
+              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+            )}
+          </div>
+
+          <div className={`
+            px-2 py-1 rounded-full text-xs font-medium border
+            ${getSourceColor(submission.source)}
+          `}>
+            {formatSource(submission.source)}
+          </div>
+        </div>
+
+        {/* Mobile Contact Info */}
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-2">
+            {submission.firstName} {submission.lastName}
+          </h3>
+          
+          <div className="space-y-1 text-sm text-slate-400">
+            <div className="flex items-center space-x-2">
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span className="break-all">{submission.email}</span>
+            </div>
+            
+            {submission.phone && (
+              <div className="flex items-center space-x-2">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>{submission.phone}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Message */}
+        <div>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            {submission.message}
+          </p>
+        </div>
+
+        {/* Mobile Action Buttons */}
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={handleStatusClick}
+            className={`
+              flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors
+              ${submission.status === 'complete'
+                ? 'bg-green-600 hover:bg-green-700 text-white'
+                : 'bg-orange-600 hover:bg-orange-700 text-white'
+              }
+            `}
+            title={submission.status === 'complete' ? 'Mark as incomplete' : 'Mark as complete'}
+          >
+            {submission.status === 'complete' ? (
+              <div className="flex items-center justify-center space-x-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Complete</span>
+              </div>
+            ) : (
+              <span>Mark Complete</span>
+            )}
+          </button>
+          
+          <button
+            onClick={handleViewClick}
+            className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+          >
+            View
+          </button>
+          
+          <button
+            onClick={handleDeleteClick}
+            className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
+            title="Delete submission"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop Layout (horizontal) */}
+      <div className="hidden lg:flex items-center justify-between">
         {/* Left side - Date and Time */}
         <div className="flex items-center space-x-4">
           <div className="flex flex-col items-center text-center">

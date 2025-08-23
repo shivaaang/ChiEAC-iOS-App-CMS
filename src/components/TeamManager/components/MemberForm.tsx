@@ -54,222 +54,234 @@ export const MemberForm: React.FC<MemberFormProps> = ({
   if (!isVisible) return null;
 
   const formContent = (
-    <div>
-      <div className="flex justify-between items-start mb-6">
-        <h3 className="font-semibold text-white text-lg">
-          {editingMember ? 'Edit Team Member' : 'Add New Team Member'}
-        </h3>
+    <div className="space-y-6">
+      {/* Form Header */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h2 className="text-xl font-bold text-white mb-2">
+            {editingMember ? 'Edit Member' : 'Create New Member'}
+          </h2>
+          <p className="text-slate-400 text-sm">
+            {editingMember ? 'Update member information' : 'Add a new team member'}
+          </p>
+        </div>
         <button
-          type="button"
           onClick={onClose}
-          className="text-slate-400 hover:text-white transition-colors p-1"
+          className="text-slate-400 hover:text-white transition-colors p-1 self-end sm:self-start"
         >
           ✕
         </button>
       </div>
 
       <form onSubmit={onSubmit}>
+        <div className="space-y-4">
+          {/* Member Name */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Full Name <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={memberFormData.member_name}
+              onChange={(e) => onMemberNameChange(e.target.value)}
+              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent touch-manipulation min-h-[44px]"
+              placeholder="Enter full name"
+              required
+              autoComplete="name"
+              autoCapitalize="words"
+            />
+          </div>
 
-          <div className="space-y-4">
-            {/* Member Name */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Full Name <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={memberFormData.member_name}
-                onChange={(e) => onMemberNameChange(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter full name"
-                required
-              />
+          {/* Member Title */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Job Title <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={memberFormData.member_title}
+              onChange={(e) => onMemberFormDataChange({ member_title: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent touch-manipulation min-h-[44px]"
+              placeholder="Enter job title"
+              required
+              autoComplete="organization-title"
+              autoCapitalize="words"
+            />
+          </div>
+
+          {/* Team (Read-only) */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Team
+            </label>
+            <div className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-300">
+              {teams.find(team => team.team_code === memberFormData.member_team)?.team_name || memberFormData.member_team || 'No team selected'}
             </div>
+          </div>
 
-            {/* Member Title */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Title/Position <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={memberFormData.member_title}
-                onChange={(e) => onMemberFormDataChange({ member_title: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter member title"
-                required
-              />
-            </div>
+          {/* Member Description (Full) */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Full Bio <span className="text-red-400">*</span>
+            </label>
+            <textarea
+              value={memberFormData.member_summary}
+              onChange={(e) => onMemberFormDataChange({ member_summary: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-vertical min-h-[100px]"
+              placeholder="Enter full biography"
+              required
+              rows={4}
+            />
+          </div>
 
-            {/* Team (Read-only) */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Team
-              </label>
-              <div className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-300">
-                {teams.find(team => team.team_code === memberFormData.member_team)?.team_name || memberFormData.member_team || 'No team selected'}
+          {/* Member Description (Short) */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Short Bio <span className="text-red-400">*</span>
+            </label>
+            <textarea
+              value={memberFormData.member_summary_short}
+              onChange={(e) => onMemberFormDataChange({ member_summary_short: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-vertical min-h-[80px]"
+              placeholder="Enter short biography (1-2 sentences)"
+              required
+              rows={3}
+            />
+          </div>
+
+          {/* Member Image Link */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Profile Image URL <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={memberFormData.member_image_link}
+              onChange={(e) => onMemberFormDataChange({ member_image_link: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent touch-manipulation min-h-[44px]"
+              placeholder="Enter image URL"
+              required
+            />
+          </div>
+
+          {/* Expert Mode Toggle - ONLY when adding new members */}
+          {!editingMember && (
+            <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-600/50">
+              <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-slate-300">Expert Mode</h4>
+                <p className="text-xs text-slate-400 mt-1">
+                  Direct Firestore field editing for advanced users
+                </p>
               </div>
+              <button
+                type="button"
+                onClick={editingMemberFirestoreFields ? onDisableExpertMode : onExpertModeToggle}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                  editingMemberFirestoreFields
+                    ? 'bg-red-500/20 text-red-300 border border-red-500/30 hover:bg-red-500/30'
+                    : 'bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30'
+                }`}
+              >
+                {editingMemberFirestoreFields ? (
+                  <>
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Safe Mode
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L5.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    Enable
+                  </>
+                )}
+              </button>
             </div>
-
-            {/* Member Description (Full) */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Member Description (Full) <span className="text-red-400">*</span>
-              </label>
-              <textarea
-                value={memberFormData.member_summary}
-                onChange={(e) => onMemberFormDataChange({ member_summary: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter full member description"
-                rows={4}
-                required
-              />
-            </div>
-
-            {/* Member Description Summary */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Member Description Summary (~20, max 25 words) <span className="text-red-400">*</span>
-              </label>
-              <textarea
-                value={memberFormData.member_summary_short}
-                onChange={(e) => onMemberFormDataChange({ member_summary_short: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter short member description summary"
-                rows={2}
-                required
-              />
-            </div>
-
-            {/* Member Image Link */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Image URL <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="url"
-                value={memberFormData.member_image_link}
-                onChange={(e) => onMemberFormDataChange({ member_image_link: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Enter image URL"
-                required
-              />
-            </div>
-
-            {/* Expert Mode Toggle - ONLY when adding new members */}
-            {!editingMember && (
-              <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-600/50">
-                <div className="flex items-center justify-between">
+            
+            {!editingMember && editingMemberFirestoreFields && (
+              <div className="mt-4 space-y-3">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-300">Expert Mode</h4>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Direct Firestore field editing for advanced users
-                  </p>
+                  <label className="block text-xs font-medium text-slate-400 mb-1">
+                    Document ID
+                  </label>
+                  <input
+                    type="text"
+                    value={memberAutoGeneratedFields.id}
+                    onChange={(e) => {
+                      if (onMemberAutoGeneratedFieldsChange) {
+                        onMemberAutoGeneratedFieldsChange({ id: e.target.value });
+                      }
+                    }}
+                    className="w-full px-3 py-2 bg-slate-700/50 border border-red-500 rounded text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-red-500"
+                  />
                 </div>
-                <button
-                  type="button"
-                  onClick={editingMemberFirestoreFields ? onDisableExpertMode : onExpertModeToggle}
-                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5 ${
-                    editingMemberFirestoreFields
-                      ? 'bg-red-500/20 text-red-300 border border-red-500/30 hover:bg-red-500/30'
-                      : 'bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30'
-                  }`}
-                >
-                  {editingMemberFirestoreFields ? (
-                    <>
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                      Safe Mode
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L5.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                      </svg>
-                      Enable
-                    </>
-                  )}
-                </button>
-              </div>
-              
-              {!editingMember && editingMemberFirestoreFields && (
-                <div className="mt-4 space-y-3">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1">
-                      Document ID
-                    </label>
-                    <input
-                      type="text"
-                      value={memberAutoGeneratedFields.id}
-                      onChange={(e) => {
-                        if (onMemberAutoGeneratedFieldsChange) {
-                          onMemberAutoGeneratedFieldsChange({ id: e.target.value });
-                        }
-                      }}
-                      className="w-full px-3 py-2 bg-slate-700/50 border border-red-500 rounded text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-red-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1">
-                      Team Code
-                    </label>
-                    <input
-                      type="text"
-                      value={memberAutoGeneratedFields.member_team}
-                      onChange={(e) => {
-                        if (onMemberAutoGeneratedFieldsChange) {
-                          onMemberAutoGeneratedFieldsChange({ member_team: e.target.value });
-                        }
-                      }}
-                      className="w-full px-3 py-2 bg-slate-700/50 border border-red-500 rounded text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-red-500"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-400 mb-1">
+                    Team Code
+                  </label>
+                  <input
+                    type="text"
+                    value={memberAutoGeneratedFields.member_team}
+                    onChange={(e) => {
+                      if (onMemberAutoGeneratedFieldsChange) {
+                        onMemberAutoGeneratedFieldsChange({ member_team: e.target.value });
+                      }
+                    }}
+                    className="w-full px-3 py-2 bg-slate-700/50 border border-red-500 rounded text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-red-500"
+                  />
                 </div>
-              )}
-              
-              {/* Safe Mode: Read-only Firestore Fields Display - when adding new members and not in expert mode */}
-              {!editingMember && !editingMemberFirestoreFields && (
-                <div className="mt-4 space-y-2">
-                  <h4 className="font-medium text-slate-300 mb-2">Firestore DB Fields:</h4>
-                  <div className="text-sm space-y-1">
-                    <div><span className="text-slate-400">ID:</span> <span className="text-orange-300 font-mono">{memberAutoGeneratedFields.id}</span></div>
-                    <div><span className="text-slate-400">Team:</span> <span className="text-orange-300 font-mono">{memberAutoGeneratedFields.member_team}</span></div>
-                  </div>
-                </div>
-              )}
               </div>
             )}
-
-            {/* Show read-only Firestore fields when editing existing members */}
-            {editingMember && (
-              <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-600/50">
+            
+            {/* Safe Mode: Read-only Firestore Fields Display - when adding new members and not in expert mode */}
+            {!editingMember && !editingMemberFirestoreFields && (
+              <div className="mt-4 space-y-2">
                 <h4 className="font-medium text-slate-300 mb-2">Firestore DB Fields:</h4>
                 <div className="text-sm space-y-1">
-                  <div><span className="text-slate-400">ID:</span> <span className="text-orange-300 font-mono">{editingMember.id}</span></div>
-                  <div><span className="text-slate-400">Team:</span> <span className="text-orange-300 font-mono">{editingMember.member_team || editingMember.team}</span></div>
+                  <div><span className="text-slate-400">ID:</span> <span className="text-orange-300 font-mono">{memberAutoGeneratedFields.id}</span></div>
+                  <div><span className="text-slate-400">Team:</span> <span className="text-orange-300 font-mono">{memberAutoGeneratedFields.member_team}</span></div>
                 </div>
               </div>
             )}
-          </div>
+            </div>
+          )}
 
-          {/* Action Buttons */}
-          <div className="flex space-x-3 pt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-500 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25"
-            >
-              {editingMember ? 'Update Member' : 'Create Member'}
-            </button>
-          </div>
-        </form>
+          {/* Show read-only Firestore fields when editing existing members */}
+          {editingMember && (
+            <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-600/50">
+              <h4 className="font-medium text-slate-300 mb-2">Firestore DB Fields:</h4>
+              <div className="text-sm space-y-1">
+                <div><span className="text-slate-400">ID:</span> <span className="text-orange-300 font-mono">{editingMember.id}</span></div>
+                <div><span className="text-slate-400">Team:</span> <span className="text-orange-300 font-mono">{editingMember.member_team || editingMember.team}</span></div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose();
+            }}
+            className="w-full px-4 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-500 transition-colors touch-manipulation min-h-[44px]"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25 touch-manipulation min-h-[44px]"
+          >
+            {editingMember ? 'Update Member' : 'Create Member'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 
@@ -279,8 +291,8 @@ export const MemberForm: React.FC<MemberFormProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-800 p-6 rounded-lg border border-orange-500/30 max-w-lg w-full mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex items-start justify-center z-50 p-4 overflow-y-auto">
+      <div className="bg-slate-800 p-4 sm:p-6 rounded-lg border border-orange-500/30 w-full max-w-lg shadow-xl my-4 min-h-fit">
         {formContent}
       </div>
     </div>

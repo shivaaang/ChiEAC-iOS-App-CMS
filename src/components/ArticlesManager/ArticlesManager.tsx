@@ -12,6 +12,124 @@ import { useArticlesManager } from './hooks/useArticlesManager';
 import ArticleViewDialog from './components/ArticleViewDialog';
 import FetchNowButton from './components/FetchNowButton';
 
+// Article Card component with proper touch handling
+interface ArticleCardProps {
+  article: Article;
+  shortId: string;
+  onArticleClick: () => void;
+}
+
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, shortId, onArticleClick }) => {
+  const [touchStart, setTouchStart] = React.useState<{ x: number; y: number; time: number } | null>(null);
+  const [touchMoved, setTouchMoved] = React.useState(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    setTouchStart({
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now()
+    });
+    setTouchMoved(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart) return;
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStart.x);
+    const deltaY = Math.abs(touch.clientY - touchStart.y);
+    
+    // If moved more than 10px in any direction, consider it a scroll/swipe
+    if (deltaX > 10 || deltaY > 10) {
+      setTouchMoved(true);
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart) return;
+    
+    const touchDuration = Date.now() - touchStart.time;
+    
+    // Only trigger click if:
+    // 1. Touch didn't move significantly (not a scroll)
+    // 2. Touch duration was reasonable (not a long press)
+    if (!touchMoved && touchDuration < 500) {
+      e.preventDefault();
+      e.stopPropagation();
+      onArticleClick();
+    }
+    
+    setTouchStart(null);
+    setTouchMoved(false);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onArticleClick();
+  };
+
+  return (
+    <div
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      className="bg-slate-800 rounded-lg p-4 cursor-pointer hover:bg-slate-750 transition-all duration-200 relative touch-manipulation"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex-1 min-w-0">
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-slate-100 mb-3 pr-8">
+            {article.title}
+          </h3>
+
+          {/* ID and Tags Row */}
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* ID Capsule - Different color */}
+            <div className="px-2.5 py-1 text-xs rounded-full bg-blue-600/20 text-blue-300 border border-blue-500/30 font-mono">
+              {shortId}
+            </div>
+
+            {/* Separator */}
+            <div className="w-px h-3 bg-slate-600"></div>
+
+            {/* Tags Capsules */}
+            <div className="flex flex-wrap gap-1.5">
+              {article.articleTags.map((tag: string, index: number) => (
+                <div
+                  key={index}
+                  className="px-2.5 py-1 text-xs rounded-full bg-slate-700/60 text-slate-300 border border-slate-600/50"
+                >
+                  {tag}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - Published date and arrow */}
+        <div className="flex items-center justify-between ml-6 lg:min-w-[120px]">
+          <div className="text-slate-400 text-sm">
+            {article.publishedAt.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })}
+          </div>
+          
+          {/* Clickable arrow */}
+          <div className="text-slate-500 hover:text-orange-400 transition-colors">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ArticlesManager: React.FC = () => {
   const {
     // State
@@ -54,7 +172,22 @@ const ArticlesManager: React.FC = () => {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-start justify-between">
+        {/* Mobile Layout: Stack vertically */}
+        <div className="lg:hidden">
+          <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2">Articles Manager</h1>
+          </div>
+          <p className="text-slate-400 text-base sm:text-lg mb-4">
+            Manage and edit article content from Medium RSS feed
+          </p>
+          <FetchNowButton 
+            onRefreshNeeded={fetchArticles}
+            className="w-full"
+          />
+        </div>
+
+        {/* Desktop Layout: Side by side */}
+        <div className="hidden lg:flex lg:items-start lg:justify-between">
           <div className="flex-1">
             <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
               <h1 className="text-4xl font-bold mb-2">Articles Manager</h1>
@@ -77,83 +210,34 @@ const ArticlesManager: React.FC = () => {
       <div className="space-y-3">
         {currentArticles.map((article: Article) => {
           // Extract the short ID from the full article ID (after the last dot)
-          const shortId = article.id.includes('.') ? article.id.split('.').pop() : article.id;
+          const shortId = article.id.includes('.') ? article.id.split('.').pop() || article.id : article.id;
           
           return (
-            <div
+            <ArticleCard
               key={article.id}
-              onClick={() => handleArticleClick(article)}
-              className="bg-slate-800 rounded-lg p-4 cursor-pointer hover:bg-slate-750 transition-all duration-200 relative"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  {/* Title */}
-                  <h3 className="text-lg font-semibold text-slate-100 mb-3 pr-8">
-                    {article.title}
-                  </h3>
-
-                  {/* ID and Tags Row */}
-                  <div className="flex items-center gap-3 flex-wrap">
-                    {/* ID Capsule - Different color */}
-                    <div className="px-2.5 py-1 text-xs rounded-full bg-blue-600/20 text-blue-300 border border-blue-500/30 font-mono">
-                      {shortId}
-                    </div>
-
-                    {/* Separator */}
-                    <div className="w-px h-3 bg-slate-600"></div>
-
-                    {/* Tags Capsules */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {article.articleTags.map((tag: string, index: number) => (
-                        <div
-                          key={index}
-                          className="px-2.5 py-1 text-xs rounded-full bg-slate-700/60 text-slate-300 border border-slate-600/50"
-                        >
-                          {tag}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right side - Published date and arrow */}
-                <div className="flex items-center justify-between ml-6 min-w-[120px]">
-                  <div className="text-slate-400 text-sm">
-                    {article.publishedAt.toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </div>
-                  
-                  {/* Clickable arrow */}
-                  <div className="text-slate-500 hover:text-orange-400 transition-colors">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
+              article={article}
+              shortId={shortId}
+              onArticleClick={() => handleArticleClick(article)}
+            />
           );
         })}
       </div>
 
       {/* Pagination */}
       {articles.length > articlesPerPage && (
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-700/60">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-8 pt-6 border-t border-slate-700/60 gap-4">
           {/* Articles count info */}
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-slate-400 text-center sm:text-left">
             Showing {startIndex + 1}-{Math.min(endIndex, articles.length)} of {articles.length} articles
           </div>
 
           {/* Pagination controls */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-center space-x-2">
             {/* Previous button */}
             <button
               onClick={goToPreviousPage}
               disabled={currentPage === 1}
-              className="px-3 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600/50 rounded-lg hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="px-3 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600/50 rounded-lg hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 min-h-[40px]"
             >
               Previous
             </button>
@@ -206,7 +290,7 @@ const ArticlesManager: React.FC = () => {
             <button
               onClick={goToNextPage}
               disabled={currentPage === totalPages}
-              className="px-3 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600/50 rounded-lg hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="px-3 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600/50 rounded-lg hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 min-h-[40px]"
             >
               Next
             </button>

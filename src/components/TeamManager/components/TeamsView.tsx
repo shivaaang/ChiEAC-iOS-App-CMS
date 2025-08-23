@@ -55,16 +55,16 @@ export const TeamsView: React.FC<TeamsViewProps> = ({
         </p>
       </div>
 
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <h2 className="text-2xl font-semibold text-white">Teams</h2>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
           {/* Team reordering controls */}
           {teams.length > 1 && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               {!isReorderingMode ? (
                 <button
                   onClick={onEnterTeamReorderingMode}
-                  className="bg-slate-700/80 hover:bg-slate-600/80 text-slate-200 hover:text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 border border-slate-600 hover:border-slate-500 flex items-center gap-2"
+                  className="bg-slate-700/80 hover:bg-slate-600/80 text-slate-200 hover:text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 border border-slate-600 hover:border-slate-500 flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -72,10 +72,10 @@ export const TeamsView: React.FC<TeamsViewProps> = ({
                   Change Order
                 </button>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 w-full sm:w-auto">
                   <button
                     onClick={onHandleDoneTeamReordering}
-                    className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg font-medium hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg flex items-center gap-2"
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg font-medium hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg flex items-center gap-2 flex-1 sm:flex-none justify-center"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -84,7 +84,7 @@ export const TeamsView: React.FC<TeamsViewProps> = ({
                   </button>
                   <button
                     onClick={onCancelTeamReordering}
-                    className="bg-slate-600 hover:bg-slate-700 text-slate-200 hover:text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 border border-slate-600 hover:border-slate-500"
+                    className="bg-slate-600 hover:bg-slate-700 text-slate-200 hover:text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 border border-slate-600 hover:border-slate-500 flex-1 sm:flex-none"
                   >
                     Cancel
                   </button>
@@ -95,7 +95,7 @@ export const TeamsView: React.FC<TeamsViewProps> = ({
 
           <button
             onClick={onCreateTeam}
-            className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-2 rounded-lg font-medium hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25"
+            className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-2 rounded-lg font-medium hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25 w-full sm:w-auto"
           >
             Add Team
           </button>

@@ -51,13 +51,13 @@ export const TeamForm: React.FC<TeamFormProps> = ({
   const formContent = (
     <div>
       {/* Header */}
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
         <h3 className="font-semibold text-white text-lg">
           {editingTeam ? 'Edit Team' : 'Add New Team'}
         </h3>
         <button
           onClick={onClose}
-          className="text-slate-400 hover:text-white transition-colors duration-200"
+          className="text-slate-400 hover:text-white transition-colors duration-200 self-end sm:self-start"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -184,17 +184,17 @@ export const TeamForm: React.FC<TeamFormProps> = ({
           )}
         </div>
 
-        <div className="flex space-x-3 pt-6">
+        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-500 transition-colors"
+            className="w-full px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-500 transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="flex-1 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25"
+            className="w-full px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/25"
           >
             {editingTeam ? 'Update Team' : 'Create Team'}
           </button>

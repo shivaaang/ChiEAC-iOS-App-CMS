@@ -111,12 +111,12 @@ const FormSubmissionsManager: React.FC = () => {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
           <div className="flex-1">
             <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-              <h1 className="text-4xl font-bold mb-2">Form Submissions</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-2">Form Submissions</h1>
             </div>
-            <p className="text-slate-400 text-lg">
+            <p className="text-slate-400 text-base sm:text-lg">
               Messages from iOS app users
             </p>
             {submissions.filter(s => s.status === 'incomplete').length > 0 && (

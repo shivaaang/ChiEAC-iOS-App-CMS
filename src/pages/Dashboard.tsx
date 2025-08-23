@@ -182,18 +182,18 @@ export default function Dashboard() {
     <div className="space-y-8">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-8 border border-slate-700/60">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-700/60">
           <div className="relative z-10">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                   Welcome to ChiEAC CMS
                 </h1>
-                <p className="text-lg text-slate-300">
+                <p className="text-base sm:text-lg text-slate-300">
                   Your comprehensive content management hub for educational advocacy
                 </p>
               </div>
-              <div className="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-2">
+              <div className="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 sm:px-4 py-2 self-start sm:self-auto">
                 <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
                 <span className="text-emerald-400 text-sm font-medium">All systems operational</span>
               </div>
@@ -212,7 +212,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
         {statCards.map((stat, index) => (
           <div
             key={index}

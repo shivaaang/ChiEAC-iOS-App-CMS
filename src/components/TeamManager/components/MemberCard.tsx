@@ -33,14 +33,67 @@ export const MemberCard = React.forwardRef<HTMLDivElement, MemberCardProps>(({
   dragHandleProps,
   ...props
 }, ref) => {
+  const [touchStart, setTouchStart] = React.useState<{ x: number; y: number; time: number } | null>(null);
+  const [touchMoved, setTouchMoved] = React.useState(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isReorderingMode) return;
+    const touch = e.touches[0];
+    setTouchStart({
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now()
+    });
+    setTouchMoved(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart || isReorderingMode) return;
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStart.x);
+    const deltaY = Math.abs(touch.clientY - touchStart.y);
+    
+    // If moved more than 10px in any direction, consider it a scroll/swipe
+    if (deltaX > 10 || deltaY > 10) {
+      setTouchMoved(true);
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (isReorderingMode || !touchStart) return;
+    
+    const touchDuration = Date.now() - touchStart.time;
+    
+    // Only trigger click if:
+    // 1. Touch didn't move significantly (not a scroll)
+    // 2. Touch duration was reasonable (not a long press)
+    if (!touchMoved && touchDuration < 500) {
+      e.preventDefault();
+      e.stopPropagation();
+      onClick();
+    }
+    
+    setTouchStart(null);
+    setTouchMoved(false);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (isReorderingMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    onClick();
+  };
 
   return (
     <div
       ref={ref}
       {...props}
       {...(isReorderingMode ? dragHandleProps : {})}
-      onClick={() => !isReorderingMode && onClick()}
-      className={`group relative backdrop-blur-sm border rounded-xl p-6 transition-all duration-300 shadow-lg ${
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      className={`group relative backdrop-blur-sm border rounded-xl p-6 transition-all duration-300 shadow-lg touch-manipulation ${
         isReorderingMode 
           ? 'cursor-grab active:cursor-grabbing border-blue-500/50 bg-slate-900/70' 
           : 'cursor-pointer'
@@ -82,9 +135,9 @@ export const MemberCard = React.forwardRef<HTMLDivElement, MemberCardProps>(({
       
       <div className="relative z-10">
         {/* Redesigned layout with order number below image */}
-        <div className="flex items-center space-x-6 pr-16">
+        <div className="flex items-center space-x-3 sm:space-x-6 pr-4 sm:pr-16">
           {/* Member image section with order number below */}
-          <div className="flex-shrink-0 flex flex-col items-center space-y-3">
+          <div className="flex-shrink-0 flex flex-col items-center space-y-2 sm:space-y-3">
             {/* Member image */}
             {(member.member_image_link || member.imageURL) ? (
               <img

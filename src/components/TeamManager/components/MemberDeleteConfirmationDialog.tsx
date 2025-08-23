@@ -52,16 +52,24 @@ export const MemberDeleteConfirmationDialog: React.FC<MemberDeleteConfirmationDi
             This action cannot be undone.
           </p>
           
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <button
-              onClick={onCancel}
-              className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-500 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onCancel();
+              }}
+              className="w-full px-4 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-500 transition-colors touch-manipulation min-h-[44px]"
             >
               Cancel
             </button>
             <button
-              onClick={onConfirm}
-              className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onConfirm();
+              }}
+              className="w-full px-4 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors touch-manipulation min-h-[44px]"
             >
               Delete Member
             </button>

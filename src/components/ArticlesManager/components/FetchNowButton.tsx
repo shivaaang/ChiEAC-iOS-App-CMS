@@ -43,7 +43,7 @@ const FetchNowButton: React.FC<FetchNowButtonProps> = ({
   };
 
   return (
-    <div className={`flex flex-col items-end ${className}`}>
+    <div className={`flex flex-col ${className.includes('w-full') ? 'items-stretch' : 'items-end'} ${className}`}>
       {/* Fetch Now Button */}
       <button
         onClick={handleFetch}

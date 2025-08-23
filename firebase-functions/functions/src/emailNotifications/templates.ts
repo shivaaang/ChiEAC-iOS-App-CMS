@@ -217,7 +217,7 @@ export class EmailTemplates {
             <p class="cta-text">
               View and manage this submission in your CMS
             </p>
-            <a href="#" class="cta-button">Open ChiEAC CMS</a>
+            <a href="https://chieac-prod.web.app/form-submissions" class="cta-button">Open ChiEAC CMS</a>
           </div>
 
           <div class="footer">
@@ -268,6 +268,8 @@ Message:
 ${data.message}
 
 -------------------
+View this submission in ChiEAC CMS: https://chieac-prod.web.app/form-submissions
+
 Submission ID: ${data.id}
 
 This notification was sent automatically when a new form submission was received through the ChiEAC mobile app.

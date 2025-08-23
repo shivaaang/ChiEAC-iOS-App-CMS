@@ -33,6 +33,56 @@ export const TeamCard = React.forwardRef<HTMLDivElement, TeamCardProps>(({
   dragHandleProps,
   ...props
 }, ref) => {
+  const [touchStart, setTouchStart] = React.useState<{ x: number; y: number; time: number } | null>(null);
+  const [touchMoved, setTouchMoved] = React.useState(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isReorderingMode) return;
+    const touch = e.touches[0];
+    setTouchStart({
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now()
+    });
+    setTouchMoved(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart || isReorderingMode) return;
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStart.x);
+    const deltaY = Math.abs(touch.clientY - touchStart.y);
+    
+    // If moved more than 10px in any direction, consider it a scroll/swipe
+    if (deltaX > 10 || deltaY > 10) {
+      setTouchMoved(true);
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (isReorderingMode || !touchStart) return;
+    
+    const touchDuration = Date.now() - touchStart.time;
+    
+    // Only trigger click if:
+    // 1. Touch didn't move significantly (not a scroll)
+    // 2. Touch duration was reasonable (not a long press)
+    if (!touchMoved && touchDuration < 500) {
+      e.preventDefault();
+      e.stopPropagation();
+      onClick();
+    }
+    
+    setTouchStart(null);
+    setTouchMoved(false);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (isReorderingMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    onClick();
+  };
 
   if (isReorderingMode) {
     return (
@@ -60,7 +110,7 @@ export const TeamCard = React.forwardRef<HTMLDivElement, TeamCardProps>(({
         </div>
 
         <div className="relative z-10">
-          <div className="flex items-center space-x-6 pr-16">
+          <div className="flex items-center space-x-3 sm:space-x-6 pr-4 sm:pr-16">
             {/* Team icon */}
             <div className="flex-shrink-0">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 border-3 border-orange-500/40 flex items-center justify-center shadow-lg">
@@ -93,8 +143,11 @@ export const TeamCard = React.forwardRef<HTMLDivElement, TeamCardProps>(({
     <div
       ref={ref}
       {...props}
-      onClick={onClick}
-      className={`group relative overflow-hidden rounded-2xl backdrop-blur-sm border transition-all duration-300 cursor-pointer transform hover:scale-[1.02] h-80 ${
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      className={`group relative overflow-hidden rounded-2xl backdrop-blur-sm border transition-all duration-300 cursor-pointer transform hover:scale-[1.02] h-80 touch-manipulation ${
         isSelected 
           ? 'border-orange-500/50 shadow-2xl shadow-orange-500/20 bg-gradient-to-br from-slate-900/80 to-slate-800/60' 
           : 'border-slate-700/50 hover:border-orange-500/40 hover:shadow-2xl hover:shadow-orange-500/15 bg-gradient-to-br from-slate-900/60 to-slate-800/40 hover:-translate-y-1'

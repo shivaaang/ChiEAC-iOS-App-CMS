@@ -85,16 +85,16 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({
             )}
           </div>
           
-          <div className="flex justify-end space-x-3">
+          <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
             <button
               onClick={handleDelete}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+              className="w-full sm:w-auto px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
             >
               Delete
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors"
+              className="w-full sm:w-auto px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors"
             >
               Close
             </button>

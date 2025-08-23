@@ -74,9 +74,9 @@ export const MembersView: React.FC<MembersViewProps> = ({
       />
 
       {/* Main content area with dynamic layout */}
-      <div className={`flex gap-6 min-h-[600px] ${selectedMemberForView || rightPanelMode ? '' : 'justify-center'}`}>
+      <div className={`flex flex-col lg:flex-row gap-6 min-h-[600px] ${selectedMemberForView || rightPanelMode ? '' : 'justify-center'}`}>
         {/* Left side: Member cards */}
-        <div className={`${selectedMemberForView || rightPanelMode ? 'w-[60%]' : 'w-full'} transition-all duration-300`}>
+        <div className={`${selectedMemberForView || rightPanelMode ? 'lg:w-[60%]' : 'w-full'} transition-all duration-300`}>
 
         {!selectedTeam ? (
           <div className="text-center py-12 text-slate-400 bg-slate-900/40 rounded-xl backdrop-blur-sm border border-slate-700">
@@ -123,7 +123,7 @@ export const MembersView: React.FC<MembersViewProps> = ({
 
         {/* Right side: Member details view or Edit form (40%) */}
         {(selectedMemberForView || rightPanelMode) && (
-          <div className="w-[40%]">
+          <div className="w-full lg:w-[40%]">
             {rightPanelMode === 'view' && selectedMemberForView && (() => {
               // Find the latest member data from the current team members
               const currentMember = filteredMembers.find(m => m.id === selectedMemberForView.id);

@@ -26,7 +26,7 @@ export default function ArticleDeleteConfirmationDialog({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]">
       <div className="bg-slate-800 border border-slate-700/60 rounded-xl shadow-2xl w-full max-w-md mx-4">
         <div className="p-6">
           {/* Header */}
@@ -65,18 +65,26 @@ export default function ArticleDeleteConfirmationDialog({
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={onCancel}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onCancel();
+              }}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-slate-200 font-medium rounded-lg transition-colors duration-200"
+              className="w-full px-4 py-3 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-slate-200 font-medium rounded-lg transition-colors duration-200 touch-manipulation min-h-[44px]"
             >
               Cancel
             </button>
             <button
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onConfirm();
+              }}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 shadow-lg shadow-red-600/25 flex items-center justify-center gap-2"
+              className="w-full px-4 py-3 bg-red-600 hover:bg-red-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 shadow-lg shadow-red-600/25 flex items-center justify-center gap-2 touch-manipulation min-h-[44px]"
             >
               {isLoading ? (
                 <>

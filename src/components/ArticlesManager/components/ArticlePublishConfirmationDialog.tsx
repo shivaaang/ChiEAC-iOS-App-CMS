@@ -74,7 +74,7 @@ export default function ArticlePublishConfirmationDialog({
   const hasChanges = detailedChanges.length > 0;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]">
       <div className="bg-slate-800 border border-slate-700/60 rounded-xl shadow-2xl w-full max-w-md mx-4">
         <div className="p-6">
           {/* Header */}
@@ -165,18 +165,18 @@ export default function ArticlePublishConfirmationDialog({
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={onCancel}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-slate-200 font-medium rounded-lg transition-colors duration-200"
+              className="w-full px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-slate-200 font-medium rounded-lg transition-colors duration-200"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
               disabled={!hasChanges || isLoading}
-              className="flex-1 px-4 py-2.5 bg-green-600 hover:bg-green-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 shadow-lg shadow-green-600/25 flex items-center justify-center gap-2"
+              className="w-full px-4 py-2.5 bg-green-600 hover:bg-green-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 shadow-lg shadow-green-600/25 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>

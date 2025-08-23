@@ -95,8 +95,8 @@ export default function ArticleViewDialog({
   return (
     <>
       {/* Main Dialog */}
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-end z-40">
-        <div className="bg-slate-800 border-l border-slate-700/60 w-[30%] h-full overflow-y-auto">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-end z-[60]">
+        <div className="bg-slate-800 border-l border-slate-700/60 w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] h-full overflow-y-auto">
           <div className="p-6">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">

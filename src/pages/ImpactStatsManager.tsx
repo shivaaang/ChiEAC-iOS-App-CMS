@@ -142,12 +142,12 @@ export default function ImpactStatsManager() {
     <div className="space-y-8">
       <div className="space-y-4">
         <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent mb-2">Impact Statistics</h1>
-          <p className="text-slate-300 text-lg">Track and manage key performance metrics and achievements</p>
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent mb-2">Impact Statistics</h1>
+          <p className="text-slate-300 text-base sm:text-lg">Track and manage key performance metrics and achievements</p>
         </div>
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <div className="flex items-center space-x-2 bg-blue-500/20 border border-blue-500/30 rounded-full px-3 py-1">
               <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
               <span className="text-blue-300 text-sm font-medium">{impactStats.length} Statistics</span>
@@ -161,7 +161,7 @@ export default function ImpactStatsManager() {
               setFormData({ number: '', label: '', subtitle: '', icon: '' });
               setShowForm(true);
             }}
-            className="group flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5"
+            className="group flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5 w-full sm:w-auto"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -246,10 +246,10 @@ export default function ImpactStatsManager() {
                 <p className="text-xs text-slate-400 mt-2">Add an emoji (defaults to 📊)</p>
               </div>
 
-              <div className="flex space-x-4 pt-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 px-6 rounded-xl font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5"
+                  className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 px-6 rounded-xl font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5"
                 >
                   {editingItem ? 'Update Statistic' : 'Add Statistic'}
                 </button>
@@ -260,7 +260,7 @@ export default function ImpactStatsManager() {
                     setEditingItem(null);
                     setFormData({ number: '', label: '', subtitle: '', icon: '' });
                   }}
-                  className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold rounded-xl transition-colors"
+                  className="w-full px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold rounded-xl transition-colors"
                 >
                   Cancel
                 </button>

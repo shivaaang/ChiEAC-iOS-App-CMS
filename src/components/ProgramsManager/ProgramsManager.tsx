@@ -50,6 +50,16 @@ export default function ProgramsManager() {
     fetchPrograms();
   }, []);
 
+  // Sync viewingProgram with programs array updates
+  useEffect(() => {
+    if (viewingProgram) {
+      const updatedProgram = programs.find(p => p.id === viewingProgram.id);
+      if (updatedProgram) {
+        setViewingProgram(updatedProgram);
+      }
+    }
+  }, [programs, viewingProgram]);
+
   const fetchPrograms = async () => {
     try {
       const q = query(collection(db, 'programs'), orderBy('order', 'asc'));
@@ -88,6 +98,11 @@ export default function ProgramsManager() {
           impact: formData.impact.filter((i: string) => i.trim() !== ''),
         };
         await updateDoc(doc(db, 'programs', editingProgram.id), programData);
+        
+        // Immediate state update for viewingProgram
+        if (viewingProgram && viewingProgram.id === editingProgram.id) {
+          setViewingProgram({ ...viewingProgram, ...programData });
+        }
       } else {
         // For new programs, generate ID and use it as document ID
         const programId = generateProgramId(formData.title);
@@ -242,15 +257,15 @@ export default function ProgramsManager() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-400 bg-clip-text text-transparent mb-2">Programs Management</h1>
-        <p className="text-slate-300 text-lg">
+        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-400 bg-clip-text text-transparent mb-2">Programs Management</h1>
+        <p className="text-slate-300 text-base sm:text-lg">
           Manage educational programs and initiatives
         </p>
       </div>
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-white">Programs</h2>
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+        <h2 className="text-xl sm:text-2xl font-semibold text-white">Programs</h2>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
           {/* Program reordering controls */}
           {programs.length > 1 && (
             <div className="flex items-center gap-3">
@@ -304,7 +319,7 @@ export default function ProgramsManager() {
               ref={provided.innerRef} 
               className={isReorderingMode 
                 ? "space-y-3" 
-                : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
               }
             >
               {programs.map((program, index) => (

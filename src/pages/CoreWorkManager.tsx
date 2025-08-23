@@ -140,17 +140,17 @@ export default function CoreWorkManager() {
   return (
     <div className="space-y-8">
       {/* Page Header */}
-      <div className="flex justify-between items-start">
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
         <div className="space-y-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
               Core Work Management
             </h1>
-            <p className="text-slate-300 text-lg">
+            <p className="text-slate-300 text-base sm:text-lg">
               Define and organize the fundamental mission areas displayed on your homepage
             </p>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <div className="flex items-center space-x-2 bg-violet-500/20 border border-violet-500/30 rounded-full px-3 py-1">
               <div className="w-2 h-2 bg-violet-400 rounded-full animate-pulse"></div>
               <span className="text-violet-300 text-sm font-medium">{coreWorkItems.length} Items</span>
@@ -245,10 +245,10 @@ export default function CoreWorkManager() {
                 </p>
               </div>
               
-              <div className="flex space-x-3 pt-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-chieac-primary to-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg hover:shadow-chieac-primary/25 transition-all duration-300 hover:-translate-y-0.5"
+                  className="w-full bg-gradient-to-r from-chieac-primary to-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg hover:shadow-chieac-primary/25 transition-all duration-300 hover:-translate-y-0.5"
                 >
                   {editingItem ? 'Update Item' : 'Create Item'}
                 </button>
@@ -259,7 +259,7 @@ export default function CoreWorkManager() {
                     setEditingItem(null);
                     setFormData({ title: '', description: '', icon: '' });
                   }}
-                  className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-colors"
+                  className="w-full px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-colors"
                 >
                   Cancel
                 </button>

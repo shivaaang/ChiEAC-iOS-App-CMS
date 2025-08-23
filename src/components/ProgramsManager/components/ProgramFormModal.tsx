@@ -38,15 +38,15 @@ export default function ProgramFormModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-slate-700">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center z-[60] p-4 overflow-y-auto">
+      <div className="bg-slate-800 rounded-lg shadow-xl w-full max-w-3xl my-4 min-h-fit">
+        <div className="p-4 sm:p-6 border-b border-slate-700">
           <h3 className="text-xl font-semibold text-white mb-4">
             {editingProgram ? 'Edit Program' : 'Add New Program'}
           </h3>
         </div>
         
-        <form onSubmit={onSubmit} className="p-6 space-y-4">
+        <form onSubmit={onSubmit} className="p-4 sm:p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
@@ -56,9 +56,11 @@ export default function ProgramFormModal({
                 type="text"
                 value={formData.title}
                 onChange={(e) => onFormDataChange({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent touch-manipulation min-h-[44px]"
                 placeholder="Enter program title"
                 required
+                autoComplete="off"
+                autoCapitalize="words"
               />
             </div>
             
@@ -70,9 +72,11 @@ export default function ProgramFormModal({
                 type="text"
                 value={formData.subtitle}
                 onChange={(e) => onFormDataChange({ ...formData, subtitle: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent touch-manipulation min-h-[44px]"
                 placeholder="Enter program subtitle"
                 required
+                autoComplete="off"
+                autoCapitalize="words"
               />
             </div>
           </div>
@@ -195,17 +199,21 @@ export default function ProgramFormModal({
             ))}
           </div>
 
-          <div className="border-t border-slate-700 pt-6 flex justify-end space-x-4">
+          <div className="border-t border-slate-700 pt-6 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
             <button
               type="button"
-              onClick={handleClose}
-              className="px-6 py-3 text-slate-300 hover:text-white border border-slate-600 rounded-lg hover:bg-slate-700/50 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleClose();
+              }}
+              className="w-full sm:w-auto px-6 py-3 text-slate-300 hover:text-white border border-slate-600 rounded-lg hover:bg-slate-700/50 transition-colors touch-manipulation min-h-[44px]"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
+              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg touch-manipulation min-h-[44px]"
             >
               {editingProgram ? 'Update Program' : 'Add Program'}
             </button>
