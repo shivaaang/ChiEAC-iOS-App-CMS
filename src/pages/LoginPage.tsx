@@ -53,8 +53,12 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md mx-auto px-6">
         {/* Logo Section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500 rounded-2xl shadow-2xl shadow-violet-500/25 mb-6">
-            <span className="text-white font-bold text-xl">CE</span>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-2xl shadow-violet-500/25 mb-6 overflow-hidden">
+            <img 
+              src="/chieac-logo.png" 
+              alt="ChiEAC Logo" 
+              className="w-full h-full object-cover"
+            />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">ChiEAC CMS</h1>
           <p className="text-slate-400 text-lg">Content Management System</p>

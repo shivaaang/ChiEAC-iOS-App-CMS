@@ -12,8 +12,7 @@ import { onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from './config/firebase';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
-import CoreWorkManager from './pages/CoreWorkManager';
-import ImpactStatsManager from './pages/ImpactStatsManager';
+import HomeManager from './pages/HomeManager';
 import TeamManager from './pages/TeamManager';
 import ProgramsManager from './pages/ProgramsManager';
 import ArticlesManager from './pages/ArticlesManager';
@@ -54,8 +53,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/core-work" element={<CoreWorkManager />} />
-          <Route path="/impact-stats" element={<ImpactStatsManager />} />
+          <Route path="/home" element={<HomeManager />} />
           <Route path="/team" element={<TeamManager />} />
           <Route path="/programs" element={<ProgramsManager />} />
           <Route path="/articles" element={<ArticlesManager />} />

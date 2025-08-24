@@ -6,11 +6,23 @@
 [![Firebase](https://img.shields.io/badge/Firebase-12.1.0-orange.svg)](https://firebase.google.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.12-teal.svg)](https://tailwindcss.com/)
 
-A modern, professional React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Features complete team management, automated article ingestion from Medium, comprehensive programs management, form submission handling with email notifications, and comprehensive Firebase Functions backend.
+## 🚀 **[Live Application](https://chieac-prod.web.app/)**
+
+> **Experience the CMS in action:** [https://chieac-prod.web.app/](https://chieac-prod.web.app/)
+
+A modern, professional React-based content management system built with TypeScript, Firebase, and Tailwind CSS. Features complete team management, automated article ingestion from Medium, comprehensive programs management, home content management with Core Work and Impact sections, form submission handling with email notifications, and comprehensive Firebase Functions backend.
 
 ## 🎯 What's Been Built
 
-This CMS currently provides **four fully implemented and production-ready modules**:
+This CMS currently provides **five fully implemented and production-ready modules**:
+
+### ✅ **Home Management**
+- Unified Core Work and Impact sections management
+- Independent reordering with drag-and-drop functionality
+- SF Symbol integration with suggestion pills
+- Complete CRUD operations for both sections
+- Conditional layout switching (grid ↔ vertical for reordering)
+- Themed UI design (emerald for Core Work, violet for Impact)
 
 ### ✅ **Form Submissions Management**
 - Complete form data collection and management system
@@ -48,6 +60,41 @@ This CMS currently provides **four fully implemented and production-ready module
 
 ---
 
+## 📸 Application Screenshots
+
+<div align="center">
+
+<table>
+<tr>
+<td width="50%">
+<img src="screenshots/dashboard.png" alt="Dashboard Overview" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+<td width="50%">
+<img src="screenshots/home_management.png" alt="Home Management" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="screenshots/team_management.png" alt="Team Management" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+<td width="50%">
+<img src="screenshots/programs_management.png" alt="Programs Management" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="screenshots/articles_management.png" alt="Articles Management" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+<td width="50%">
+<img src="screenshots/forms_management.png" alt="Forms Management" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
 ## 🏗️ Architecture Overview
 
 ### Technology Stack
@@ -57,6 +104,7 @@ This CMS currently provides **four fully implemented and production-ready module
 - **Styling**: Tailwind CSS v4.1.12 with custom ChiEAC design system
 - **State Management**: Custom React hooks with type-safe patterns
 - **Email Service**: Gmail API with OAuth 2.0 authentication
+- **Drag & Drop**: @hello-pangea/dnd for reordering functionality
 
 ### Core Architecture Principles
 - **Modular Design**: Each feature is a self-contained module
@@ -100,6 +148,8 @@ The system requires these collections:
 - `articles` - Medium articles and metadata
 - `programs` - Educational programs with benefits and impact data
 - `contact_form_submissions` - Contact form submissions from iOS app
+- `core_work` - Core work items with titles and descriptions
+- `impact_stats` - Impact statistics with numbers and labels
 
 ### 4. Deploy Firebase Functions (Optional)
 For full functionality including automated article ingestion and email notifications:
@@ -133,7 +183,13 @@ npm run lint         # ESLint code analysis with React rules
 ```
 src/
 ├── components/
-│   ├── Layout.tsx                    # Main application layout
+│   ├── Layout.tsx                    # Main application layout with navigation
+│   ├── HomeManager/                  # 🟢 COMPLETE: Home content management
+│   │   ├── HomeManager.tsx          # Main component with both sections
+│   │   ├── components/              # 9 UI components (cards, forms, dialogs, sections)
+│   │   ├── hooks/                   # useHomeManager hook for state management
+│   │   ├── types.ts                 # TypeScript definitions
+│   │   └── index.ts                 # Module exports
 │   ├── TeamManager/                  # 🟢 COMPLETE: Team & member management
 │   │   ├── TeamManager.tsx          # Main component with routing
 │   │   ├── components/              # UI components (13 components)
@@ -154,20 +210,19 @@ src/
 │       ├── hooks/                   # Submission fetching and management
 │       └── index.ts                 # Module exports
 ├── pages/
+│   ├── HomeManager.tsx              # 🟢 Home management page
 │   ├── TeamManager.tsx              # 🟢 Team management page
 │   ├── ArticlesManager.tsx          # 🟢 Articles management page
 │   ├── ProgramsManager.tsx          # 🟢 Programs management page
 │   ├── FormSubmissionsManager.tsx   # 🟢 Form submissions management page
 │   ├── Dashboard.tsx                # 🟢 Main dashboard
-│   ├── LoginPage.tsx                # 🟢 Authentication
-│   ├── CoreWorkManager.tsx          # 🔶 Boilerplate (not implemented)
-│   └── ImpactStatsManager.tsx       # 🔶 Boilerplate (not implemented)
+│   └── LoginPage.tsx                # 🟢 Authentication
 ├── config/
 │   └── firebase.ts                  # 🟢 Firebase configuration
 ├── types/
 │   └── index.ts                     # 🟢 Global TypeScript definitions
 └── utils/
-    └── dateUtils.ts                 # 🟢 Date formatting utilities
+    └── mediumIngestService.ts       # 🟢 Article ingestion utilities
 
 firebase-functions/                   # 🟢 COMPLETE: Serverless backend
 ├── functions/src/
@@ -182,11 +237,18 @@ firebase-functions/                   # 🟢 COMPLETE: Serverless backend
 
 **Legend:**
 - 🟢 **Complete & Production Ready**
-- 🔶 **Boilerplate Only** (planned for future development)
 
 ---
 
 ## 🎯 Core Features
+
+### Home Management System
+- **Unified Interface**: Single component managing both Core Work and Impact sections
+- **Independent Reordering**: Separate drag-and-drop modes for each section
+- **SF Symbol Integration**: Icon suggestions with themed pills (8 per form)
+- **Conditional Layouts**: Grid layout switches to vertical stack during reordering
+- **Document ID Patterns**: Meaningful IDs (core_work.{title}, impact.{label})
+- **Real-time Sync**: Immediate database updates with order persistence
 
 ### Form Submissions System
 - **Real-time Collection**: Firestore integration for form data storage
@@ -245,6 +307,24 @@ The CMS includes a comprehensive serverless backend built with Firebase Function
 ### Core Interfaces (Implemented)
 
 ```typescript
+// Home Management
+interface CoreWorkItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string; // SF Symbol name
+  order: number;
+}
+
+interface ImpactItem {
+  id: string;
+  number: string;
+  label: string;
+  subtitle: string;
+  icon: string; // SF Symbol name
+  order: number;
+}
+
 // Team Management
 interface Team {
   id: string;
@@ -310,12 +390,14 @@ interface FormSubmission {
 - **Background**: Slate scale (#0f172a to #1e293b)
 - **Interactive**: Orange/amber with opacity variations
 - **Status**: Success (green), warning (yellow), error (red)
+- **Home Sections**: Emerald (Core Work), Violet (Impact)
 
 ### Component Patterns
 - **Consistent Spacing**: Tailwind's 4px grid system
 - **Modal Overlays**: Backdrop blur with gradient backgrounds
 - **Professional Typography**: System fonts with proper hierarchy
 - **Interactive States**: Hover, focus, and active state styling
+- **SF Symbol Integration**: Icon suggestions with themed pills
 
 ---
 
@@ -343,17 +425,14 @@ Configure production environment variables in Firebase hosting settings:
 ## 🔄 Current Development Status
 
 ### ✅ **Completed & Production Ready**
+- **Home Management**: Unified Core Work and Impact sections with independent reordering
 - **Form Submissions**: Complete system with email notifications
 - **Articles Management**: Full CRUD with Medium integration
 - **Team Management**: Complete with drag-and-drop functionality
 - **Programs Management**: Full CRUD with modular component architecture
 - **Firebase Functions**: Professional backend with email and article services
-- **Authentication**: Firebase Auth with protected routes
-- **UI/UX**: Professional design system with ChiEAC branding
-
-### 🔶 **Planned for Future Development**
-- **Core Work Manager**: Currently boilerplate code
-- **Impact Stats Manager**: Currently boilerplate code
+- **Authentication**: Firebase Auth with protected routes and functional logout
+- **UI/UX**: Professional design system with ChiEAC branding, clean interface without mock components
 
 ---
 
@@ -366,204 +445,3 @@ Configure production environment variables in Firebase hosting settings:
 ---
 
 **Built with ❤️ for ChiEAC** | Professional CMS Solution | React + TypeScript + Firebase Functions
-
-## Installation
-
-### Prerequisites
-- Node.js 18+ with npm or yarn
-- Firebase project with Firestore and Authentication enabled
-- Modern browser supporting ES2022
-
-### Setup Process
-
-1. **Clone and install dependencies**
-   ```bash
-   git clone [repository-url]
-   cd cms-chieac
-   npm install
-   ```
-
-2. **Configure Firebase**
-   Create `.env` file with Firebase configuration:
-   ```env
-   VITE_FIREBASE_API_KEY=your_api_key
-   VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-   VITE_FIREBASE_PROJECT_ID=your_project_id
-   VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-   VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-   VITE_FIREBASE_APP_ID=your_app_id
-   VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
-   ```
-
-3. **Initialize Firestore collections**
-   Required collections: `teams`, `team_members`, `articles`, `programs`, `core_work`, `impact_stats`
-
-4. **Development server**
-   ```bash
-   npm run dev
-   ```
-
-## Development Commands
-
-```bash
-npm run dev          # Start development server with hot reload
-npm run build        # Production build
-npm run preview      # Preview production build locally
-npm run lint         # ESLint code analysis
-npx tsc --noEmit     # TypeScript type checking
-```
-
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── Layout.tsx                    # Main application layout
-│   ├── TeamManager/                  # Team management module
-│   │   ├── TeamManager.tsx          # Main component
-│   │   ├── components/              # UI components
-│   │   ├── hooks/                   # State management hooks
-│   │   ├── types.ts                 # TypeScript definitions
-│   │   └── index.ts                 # Module exports
-│   └── ArticlesManager/             # Article management module
-│       ├── ArticlesManager.tsx      # Main component
-│       ├── components/              # UI components
-│       ├── hooks/                   # State management hooks
-│       ├── types.ts                 # TypeScript definitions
-│       └── index.ts                 # Module exports
-├── pages/                           # Route components
-├── config/                          # Firebase configuration
-├── types/                           # Global type definitions
-├── assets/                          # Static assets
-└── utils/                           # Utility functions and services
-
-firebase-functions/                   # Firebase Functions serverless backend
-├── functions/
-│   ├── src/
-│   │   ├── index.ts                 # Function exports and HTTP endpoints
-│   │   ├── mediumProcessor.ts       # RSS feed processing logic
-│   │   └── firestoreSync.ts         # Database synchronization operations
-│   ├── package.json                 # Functions dependencies
-│   └── tsconfig.json                # Functions TypeScript configuration
-└── .firebaserc                      # Firebase project configuration
-```
-
-## Component Architecture
-
-### TeamManager Module
-- **Modular Design**: Separate components for teams view, members view, forms, and dialogs
-- **State Management**: useTeamManager hook for data operations, useTeamHandlers for event handling, useConfirmationHandlers for dialog workflows
-- **Expert Mode**: Direct Firestore field editing with warning dialogs for advanced users
-- **Drag-and-Drop**: Reordering functionality with confirmation workflows
-
-### ArticlesManager Module
-- **CRUD Operations**: Full create, read, update, delete functionality for articles
-- **Pagination System**: Configurable page size with navigation controls
-- **Inline Editing**: Form-based editing with change tracking and confirmation
-- **Tag Management**: Dynamic tag addition and removal with validation
-
-### ProgramsManager Module
-- **Modular Design**: 4 separate components (ProgramCard, ProgramViewDialog, ProgramFormModal, ProgramDeleteConfirmationDialog)
-- **SF Symbol Integration**: Icon validation with amber warning system for mobile app compatibility
-- **Conditional Layouts**: Grid layout switches to vertical for drag-and-drop reordering mode
-- **Benefits & Impact Lists**: Dynamic list management with add/remove functionality
-- **Card-based UI**: Emerald/teal themed design following consistent design patterns
-- **Document Compliance**: Proper ID generation pattern matching Firebase best practices
-
-### FormSubmissionsManager Module
-- **Real-time Data**: Live form submission collection from iOS app
-- **Email Integration**: Automated email notifications via Firebase Functions
-- **Status Management**: Mark submissions as read/unread with timestamp tracking
-- **Pagination System**: Configurable page size with navigation controls
-- **Professional UI**: Clean submission cards with contact information display
-
-### Firebase Functions Module
-- **Automated Content Ingestion**: Scheduled hourly RSS feed processing from Medium publications
-- **Manual Content Sync**: On-demand article fetching via HTTP endpoints with CMS integration
-- **Duplicate Prevention**: Smart content deduplication using canonical URL identification
-- **Lock Mechanisms**: Prevents overlapping executions during concurrent function invocations
-- **Serverless Architecture**: Node.js 22 runtime with TypeScript for type-safe cloud functions
-
-## Data Models
-
-### Core Interfaces
-
-```typescript
-interface Team {
-  id: string;
-  team_name: string;
-  team_code: string;
-  team_description: string;
-  order: number;
-}
-
-interface TeamMember {
-  id: string;
-  member_name: string;
-  member_title: string;
-  member_team: string;
-  member_summary: string;
-  member_summary_short: string;
-  member_image_link?: string;
-  order: number;
-}
-
-interface Article {
-  id: string;
-  title: string;
-  publishedAt: Date;
-  imageLink?: string;
-  mediumLink?: string;
-  articleTags: string[];
-}
-```
-
-## Firebase Configuration
-
-### Firestore Collections
-
-**teams**: Team documents with name, code, description, and ordering
-**team_members**: Member documents with team associations and metadata  
-**articles**: Article documents with publication data and tag arrays
-**programs**: Educational program documents with benefits, impact, and SF Symbol icons
-**contact_form_submissions**: Form submission documents with user contact information and status
-**core_work**: Core work items with descriptions and ordering
-**impact_stats**: Statistical data with numbers and labels
-
-### Security Rules
-Implement Firestore security rules to restrict access to authenticated users and appropriate read/write permissions based on user roles.
-
-### Authentication
-Firebase Authentication with email/password provider. Protected routes ensure authenticated access to all CMS functionality.
-
-## Styling System
-
-### Design Tokens
-- **Primary Colors**: Orange (#f97316) and Amber (#f59e0b)
-- **Background**: Slate color scale (#0f172a to #1e293b)
-- **Interactive States**: Orange/amber variants with opacity levels
-- **Typography**: System font stack with consistent sizing scale
-
-### Component Patterns
-- Consistent spacing using Tailwind's spacing scale
-- Backdrop blur effects for modal overlays
-- Gradient backgrounds for visual hierarchy
-- Border radius standards for component consistency
-
-## Deployment
-
-### Firebase Hosting
-```bash
-npm install -g firebase-tools
-firebase login
-firebase init hosting
-npm run build
-firebase deploy
-```
-
-### Environment Configuration
-Production deployment requires environment variables configured in Firebase hosting settings or through deployment environment.
-
----
-
-**Built with ❤️ for ChiEAC** | Professional CMS Solution | React + TypeScript + Firebase
